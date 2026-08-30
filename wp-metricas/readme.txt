@@ -1,5 +1,5 @@
 === WP Métricas ===
-Contributors: wp-metricas
+Contributors: origenweb
 Tags: analytics, metrics, elementor, acf, tracking, statistics
 Requires at least: 5.8
 Tested up to: 6.4
@@ -7,6 +7,9 @@ Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Plugin URI: https://origenweb.co/plugins
+Author: Origen Web
+Author URI: https://origenweb.co/plugins
 
 Métricas de visitas, clics en botones y tiempo por sección para WordPress. Compatible con Elementor y ACF.
 

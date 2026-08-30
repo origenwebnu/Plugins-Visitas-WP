@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: WP Métricas
- * Plugin URI: https://github.com/Plugins-Visitas-WP
+ * Plugin URI: https://origenweb.co/plugins
  * Description: Métricas de visitas, clics en botones y tiempo por sección. Compatible con Elementor y ACF.
  * Version: 1.0.0
- * Author: WP Métricas
+ * Author: Origen Web
+ * Author URI: https://origenweb.co/plugins
  * Text Domain: wp-metricas
  * Requires at least: 5.8
  * Requires PHP: 7.4
@@ -20,6 +21,7 @@ define( 'WP_METRICAS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-database.php';
+require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-realtime.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-settings.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-tracker.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-rest-api.php';

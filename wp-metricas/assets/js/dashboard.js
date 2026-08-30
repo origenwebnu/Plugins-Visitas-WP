@@ -9,6 +9,7 @@
 	var visitsChart = null;
 	var clicksChart = null;
 	var typesChart = null;
+	var realtimeInterval = null;
 
 	var els = {
 		dateFrom: document.getElementById('metricas-date-from'),
@@ -16,6 +17,7 @@
 		typeFilter: document.getElementById('metricas-type-filter'),
 		applyBtn: document.getElementById('metricas-apply-filters'),
 		loading: document.getElementById('metricas-loading'),
+		activeVisitors: document.getElementById('metricas-active-visitors'),
 		totalVisits: document.getElementById('metricas-total-visits'),
 		totalClicks: document.getElementById('metricas-total-clicks'),
 		uniqueSessions: document.getElementById('metricas-unique-sessions'),
@@ -120,8 +122,8 @@
 				datasets: [{
 					label: config.i18n.visits,
 					data: values,
-					borderColor: '#2271b1',
-					backgroundColor: 'rgba(34, 113, 177, 0.1)',
+					borderColor: '#6366f1',
+					backgroundColor: 'rgba(99, 102, 241, 0.1)',
 					fill: true,
 					tension: 0.3
 				}]
@@ -155,7 +157,7 @@
 				datasets: [{
 					label: config.i18n.clicks,
 					data: values,
-					backgroundColor: '#00a32a'
+					backgroundColor: '#10b981'
 				}]
 			},
 			options: {
@@ -186,7 +188,7 @@
 				labels: labels,
 				datasets: [{
 					data: values,
-					backgroundColor: ['#2271b1', '#00a32a', '#dba617', '#d63638', '#8c5ed9', '#3582c4']
+					backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']
 				}]
 			},
 			options: {
@@ -268,5 +270,44 @@
 		els.applyBtn.addEventListener('click', fetchStats);
 	}
 
+	function fetchRealtime() {
+		if (!config.realtimeUrl) {
+			return;
+		}
+
+		fetch(config.realtimeUrl, {
+			headers: {
+				'X-WP-Nonce': config.nonce
+			},
+			credentials: 'same-origin'
+		})
+			.then(function (res) {
+				if (!res.ok) {
+					throw new Error('Error');
+				}
+				return res.json();
+			})
+			.then(function (data) {
+				if (els.activeVisitors) {
+					els.activeVisitors.textContent = data.active_visitors || 0;
+				}
+			})
+			.catch(function () {
+				// Silenciar errores de polling.
+			});
+	}
+
+	function startRealtimePolling() {
+		fetchRealtime();
+		realtimeInterval = setInterval(fetchRealtime, config.realtimeInterval || 15000);
+	}
+
+	document.addEventListener('visibilitychange', function () {
+		if (document.visibilityState === 'visible') {
+			fetchRealtime();
+		}
+	});
+
 	fetchStats();
+	startRealtimePolling();
 })();

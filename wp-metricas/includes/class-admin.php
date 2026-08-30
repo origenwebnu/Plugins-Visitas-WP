@@ -97,9 +97,11 @@ class WP_Metricas_Admin {
 				'wp-metricas-dashboard',
 				'wpMetricasDashboard',
 				array(
-					'restUrl' => esc_url_raw( rest_url( 'wp-metricas/v1/stats' ) ),
-					'nonce'   => wp_create_nonce( 'wp_rest' ),
-					'i18n'    => array(
+					'restUrl'          => esc_url_raw( rest_url( 'wp-metricas/v1/stats' ) ),
+					'realtimeUrl'      => esc_url_raw( rest_url( 'wp-metricas/v1/realtime' ) ),
+					'realtimeInterval' => 15000,
+					'nonce'            => wp_create_nonce( 'wp_rest' ),
+					'i18n'             => array(
 						'visits'   => __( 'Visitas', 'wp-metricas' ),
 						'clicks'   => __( 'Clics', 'wp-metricas' ),
 						'loading'  => __( 'Cargando...', 'wp-metricas' ),
