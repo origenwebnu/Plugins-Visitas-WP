@@ -68,6 +68,26 @@ class WP_Metricas_REST_API {
 				'permission_callback' => array( $this, 'admin_permission' ),
 			)
 		);
+
+		register_rest_route(
+			'wp-metricas/v1',
+			'/heartbeat',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'handle_heartbeat' ),
+				'permission_callback' => array( $this, 'tracking_permission' ),
+			)
+		);
+
+		register_rest_route(
+			'wp-metricas/v1',
+			'/realtime',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_realtime' ),
+				'permission_callback' => array( $this, 'admin_permission' ),
+			)
+		);
 	}
 
 	/**
@@ -186,6 +206,41 @@ class WP_Metricas_REST_API {
 				'id'      => $id,
 			),
 			$id ? 201 : 500
+		);
+	}
+
+	/**
+	 * Registra heartbeat de visitante activo.
+	 *
+	 * @param WP_REST_Request $request Petición.
+	 */
+	public function handle_heartbeat( WP_REST_Request $request ) {
+		$session_id = sanitize_text_field( $request->get_param( 'session_id' ) ?: '' );
+		$post_id    = absint( $request->get_param( 'post_id' ) );
+
+		WP_Metricas_Realtime::heartbeat(
+			$session_id,
+			$post_id,
+			esc_url_raw( $request->get_param( 'url' ) ?: '' ),
+			sanitize_text_field( $request->get_param( 'post_title' ) ?: '' )
+		);
+
+		return new WP_REST_Response( array( 'success' => true ), 200 );
+	}
+
+	/**
+	 * Obtiene conteo de visitantes activos en tiempo real.
+	 *
+	 * @param WP_REST_Request $request Petición.
+	 */
+	public function get_realtime( WP_REST_Request $request ) {
+		return new WP_REST_Response(
+			array(
+				'active_visitors' => WP_Metricas_Realtime::get_active_count(),
+				'sessions'        => WP_Metricas_Realtime::get_active_sessions(),
+				'timestamp'       => time(),
+			),
+			200
 		);
 	}
 

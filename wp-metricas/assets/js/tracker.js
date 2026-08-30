@@ -271,6 +271,36 @@
 		trackVisit();
 		trackButtons();
 		trackSections();
+		startHeartbeat();
+	}
+
+	/**
+	 * Envía heartbeat para visitantes en tiempo real.
+	 */
+	function startHeartbeat() {
+		var interval = (config.heartbeatInterval || 30) * 1000;
+
+		function ping() {
+			if (document.visibilityState !== 'visible') {
+				return;
+			}
+
+			sendData('heartbeat', {
+				session_id: config.sessionId,
+				post_id: config.postId,
+				url: config.url,
+				post_title: config.postTitle
+			});
+		}
+
+		ping();
+		setInterval(ping, interval);
+
+		document.addEventListener('visibilitychange', function () {
+			if (document.visibilityState === 'visible') {
+				ping();
+			}
+		});
 	}
 
 	if (config.trackElementor && config.isElementor) {

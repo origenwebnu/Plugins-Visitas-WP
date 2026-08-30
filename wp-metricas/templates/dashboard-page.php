@@ -26,7 +26,7 @@ $default_to   = gmdate( 'Y-m-d' );
 			<input type="date" id="metricas-date-to" value="<?php echo esc_attr( $default_to ); ?>">
 		</div>
 		<div class="filter-group">
-			<label for="metricas-type-filter"><?php esc_html_e( 'Tipo de contenido', 'wp-metricas' ); ?></label>
+			<label for="metricas-type-filter"><?php esc_html_e( 'Tipo', 'wp-metricas' ); ?></label>
 			<select id="metricas-type-filter">
 				<option value="all"><?php esc_html_e( 'Todos', 'wp-metricas' ); ?></option>
 				<option value="pages"><?php esc_html_e( 'Páginas', 'wp-metricas' ); ?></option>
@@ -36,8 +36,7 @@ $default_to   = gmdate( 'Y-m-d' );
 				<option value="elementor"><?php esc_html_e( 'Páginas Elementor', 'wp-metricas' ); ?></option>
 			</select>
 		</div>
-		<div class="filter-group">
-			<label>&nbsp;</label>
+		<div class="filter-group filter-action">
 			<button type="button" id="metricas-apply-filters" class="button button-primary">
 				<?php esc_html_e( 'Aplicar filtros', 'wp-metricas' ); ?>
 			</button>
@@ -50,6 +49,14 @@ $default_to   = gmdate( 'Y-m-d' );
 	</div>
 
 	<div class="wp-metricas-cards">
+		<div class="wp-metricas-card realtime">
+			<div class="card-label">
+				<span class="wp-metricas-live-dot"></span>
+				<?php esc_html_e( 'Visitas en tiempo real', 'wp-metricas' ); ?>
+			</div>
+			<div class="card-value" id="metricas-active-visitors">—</div>
+			<div class="card-sub"><?php esc_html_e( 'Personas activas ahora', 'wp-metricas' ); ?></div>
+		</div>
 		<div class="wp-metricas-card">
 			<div class="card-label"><?php esc_html_e( 'Total visitas', 'wp-metricas' ); ?></div>
 			<div class="card-value" id="metricas-total-visits">—</div>
