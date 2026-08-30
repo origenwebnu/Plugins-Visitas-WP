@@ -31,30 +31,30 @@ class WP_Metricas_Admin {
 	 */
 	public function register_menus(): void {
 		add_menu_page(
-			__( 'Métricas y Análisis OW', 'wp-metricas' ),
-			__( 'Métricas y Análisis OW', 'wp-metricas' ),
+			__( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
+			__( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
 			'manage_options',
-			'wp-metricas-dashboard',
+			'metricas-analisis-ow-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' ),
 			'dashicons-chart-area',
 			30
 		);
 
 		add_submenu_page(
-			'wp-metricas-dashboard',
-			__( 'Dashboard', 'wp-metricas' ),
-			__( 'Dashboard', 'wp-metricas' ),
+			'metricas-analisis-ow-dashboard',
+			__( 'Dashboard', 'metricas-analisis-ow' ),
+			__( 'Dashboard', 'metricas-analisis-ow' ),
 			'manage_options',
-			'wp-metricas-dashboard',
+			'metricas-analisis-ow-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' )
 		);
 
 		add_submenu_page(
-			'wp-metricas-dashboard',
-			__( 'Configuración', 'wp-metricas' ),
-			__( 'Configuración', 'wp-metricas' ),
+			'metricas-analisis-ow-dashboard',
+			__( 'Configuración', 'metricas-analisis-ow' ),
+			__( 'Configuración', 'metricas-analisis-ow' ),
 			'manage_options',
-			'wp-metricas-settings',
+			'metricas-analisis-ow-settings',
 			array( $this, 'render_settings_page' )
 		);
 	}
@@ -65,7 +65,7 @@ class WP_Metricas_Admin {
 	 * @param string $hook Página actual.
 	 */
 	public function enqueue_admin_assets( string $hook ): void {
-		if ( strpos( $hook, 'wp-metricas' ) === false ) {
+		if ( strpos( $hook, 'metricas-analisis-ow' ) === false ) {
 			return;
 		}
 
@@ -76,7 +76,7 @@ class WP_Metricas_Admin {
 			WP_METRICAS_VERSION
 		);
 
-		if ( 'toplevel_page_wp-metricas-dashboard' === $hook || strpos( $hook, 'wp-metricas-dashboard' ) !== false ) {
+		if ( 'toplevel_page_metricas-analisis-ow-dashboard' === $hook || strpos( $hook, 'metricas-analisis-ow-dashboard' ) !== false ) {
 			wp_enqueue_script(
 				'wp-metricas-chartjs',
 				WP_METRICAS_PLUGIN_URL . 'assets/js/chart.umd.min.js',
@@ -86,7 +86,7 @@ class WP_Metricas_Admin {
 			);
 
 			wp_enqueue_script(
-				'wp-metricas-dashboard',
+				'metricas-analisis-ow-dashboard',
 				WP_METRICAS_PLUGIN_URL . 'assets/js/dashboard.js',
 				array( 'wp-metricas-chartjs' ),
 				WP_METRICAS_VERSION,
@@ -94,22 +94,22 @@ class WP_Metricas_Admin {
 			);
 
 			wp_localize_script(
-				'wp-metricas-dashboard',
+				'metricas-analisis-ow-dashboard',
 				'wpMetricasDashboard',
 				array(
-					'restUrl'          => esc_url_raw( rest_url( 'wp-metricas/v1/stats' ) ),
-					'realtimeUrl'      => esc_url_raw( rest_url( 'wp-metricas/v1/realtime' ) ),
+					'restUrl'          => esc_url_raw( rest_url( 'metricas-analisis-ow/v1/stats' ) ),
+					'realtimeUrl'      => esc_url_raw( rest_url( 'metricas-analisis-ow/v1/realtime' ) ),
 					'realtimeInterval' => 15000,
 					'defaultDateFrom'  => gmdate( 'Y-m-d', strtotime( '-30 days' ) ),
 					'defaultDateTo'    => gmdate( 'Y-m-d' ),
 					'nonce'            => wp_create_nonce( 'wp_rest' ),
 					'i18n'             => array(
-						'visits'   => __( 'Visitas', 'wp-metricas' ),
-						'clicks'   => __( 'Clics', 'wp-metricas' ),
-						'loading'  => __( 'Cargando...', 'wp-metricas' ),
-						'noData'   => __( 'Sin datos para el período seleccionado', 'wp-metricas' ),
-						'seconds'  => __( 'segundos', 'wp-metricas' ),
-						'minutes'  => __( 'minutos', 'wp-metricas' ),
+						'visits'   => __( 'Visitas', 'metricas-analisis-ow' ),
+						'clicks'   => __( 'Clics', 'metricas-analisis-ow' ),
+						'loading'  => __( 'Cargando...', 'metricas-analisis-ow' ),
+						'noData'   => __( 'Sin datos para el período seleccionado', 'metricas-analisis-ow' ),
+						'seconds'  => __( 'segundos', 'metricas-analisis-ow' ),
+						'minutes'  => __( 'minutos', 'metricas-analisis-ow' ),
 					),
 				)
 			);

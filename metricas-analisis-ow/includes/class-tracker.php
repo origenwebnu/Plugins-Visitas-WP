@@ -55,7 +55,7 @@ class WP_Metricas_Tracker {
 			'wp-metricas-tracker',
 			'wpMetricas',
 			array(
-				'restUrl'         => esc_url_raw( rest_url( 'wp-metricas/v1' ) ),
+				'restUrl'         => esc_url_raw( rest_url( 'metricas-analisis-ow/v1' ) ),
 				'nonce'           => wp_create_nonce( 'wp_rest' ),
 				'postId'          => $post->ID,
 				'postType'        => $post->post_type,

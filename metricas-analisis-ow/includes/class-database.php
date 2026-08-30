@@ -233,25 +233,22 @@ class WP_Metricas_Database {
 
 		$deleted = 0;
 		$tables  = array(
-			array(
-				'table' => self::visits_table(),
-				'column' => 'visited_at',
-			),
-			array(
-				'table' => self::clicks_table(),
-				'column' => 'clicked_at',
-			),
-			array(
-				'table' => self::sections_table(),
-				'column' => 'recorded_at',
-			),
+			self::visits_table()   => 'visited_at',
+			self::clicks_table()   => 'clicked_at',
+			self::sections_table() => 'recorded_at',
 		);
 
-		foreach ( $tables as $item ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		foreach ( $tables as $table => $column ) {
+			if ( ! WP_Metricas_DB_Helper::is_valid_table( $table ) || ! WP_Metricas_DB_Helper::is_valid_date_column( $column ) ) {
+				continue;
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
 			$deleted += (int) $wpdb->query(
 				$wpdb->prepare(
-					"DELETE FROM {$item['table']} WHERE {$item['column']} < %s",
+					'DELETE FROM %i WHERE %i < %s',
+					$table,
+					$column,
 					$cutoff
 				)
 			);
@@ -273,8 +270,12 @@ class WP_Metricas_Database {
 		);
 
 		foreach ( $tables as $table ) {
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+			if ( ! WP_Metricas_DB_Helper::is_valid_table( $table ) ) {
+				continue;
+			}
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table ) );
 		}
 
 		delete_option( 'wp_metricas_settings' );

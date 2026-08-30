@@ -3,14 +3,14 @@
  * Plugin Name:       Métricas y Análisis OW
  * Plugin URI:        https://origenweb.co/plugins
  * Description:       Métricas de visitas, clics en botones y tiempo por página. Compatible con Elementor y ACF.
- * Version:           1.1.1
+ * Version:           1.1.3
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Origen Web
  * Author URI:        https://origenweb.co
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       wp-metricas
+ * Text Domain:       metricas-analisis-ow
  * Domain Path:       /languages
  */
 
@@ -18,12 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WP_METRICAS_VERSION', '1.1.1' );
+define( 'WP_METRICAS_VERSION', '1.1.2' );
 define( 'WP_METRICAS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-database.php';
+require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-db-helper.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-cron.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-realtime.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-settings.php';
@@ -81,8 +82,6 @@ final class WP_Metricas {
 	 * Inicializa componentes del plugin.
 	 */
 	public function init(): void {
-		load_plugin_textdomain( 'wp-metricas', false, dirname( WP_METRICAS_PLUGIN_BASENAME ) . '/languages' );
-
 		WP_Metricas_Database::maybe_upgrade();
 		WP_Metricas_Cron::schedule();
 		WP_Metricas_Cron::instance();
