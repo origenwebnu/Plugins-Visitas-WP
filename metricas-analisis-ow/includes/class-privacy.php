@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WP_Metricas_Privacy {
 
-	const EXPORTER_KEY = 'wp-metricas';
-	const ERASER_KEY   = 'wp-metricas';
+	const EXPORTER_KEY = 'metricas-analisis-ow';
+	const ERASER_KEY   = 'metricas-analisis-ow';
 
 	/**
 	 * @var WP_Metricas_Privacy|null
@@ -40,24 +40,24 @@ class WP_Metricas_Privacy {
 
 		$content = sprintf(
 			/* translators: %s: plugin name */
-			__( 'Este sitio utiliza el plugin %s para medir visitas, clics en botones y tiempo de permanencia en páginas con fines estadísticos.', 'wp-metricas' ),
+			__( 'Este sitio utiliza el plugin %s para medir visitas, clics en botones y tiempo de permanencia en páginas con fines estadísticos.', 'metricas-analisis-ow' ),
 			'<strong>Métricas y Análisis OW</strong>'
 		);
 
-		$content .= '<h2>' . esc_html__( 'Qué datos se recopilan', 'wp-metricas' ) . '</h2>';
+		$content .= '<h2>' . esc_html__( 'Qué datos se recopilan', 'metricas-analisis-ow' ) . '</h2>';
 		$content .= '<ul>';
-		$content .= '<li>' . esc_html__( 'Identificador de sesión anónimo (cookie).', 'wp-metricas' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'Páginas visitadas, URL de referencia y tipo de dispositivo.', 'wp-metricas' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'Clics en botones (texto y URL del botón).', 'wp-metricas' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'Tiempo de permanencia en cada página.', 'wp-metricas' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'ID de usuario de WordPress si la persona está registrada.', 'wp-metricas' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Identificador de sesión anónimo (cookie).', 'metricas-analisis-ow' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Páginas visitadas, URL de referencia y tipo de dispositivo.', 'metricas-analisis-ow' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Clics en botones (texto y URL del botón).', 'metricas-analisis-ow' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Tiempo de permanencia en cada página.', 'metricas-analisis-ow' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'ID de usuario de WordPress si la persona está registrada.', 'metricas-analisis-ow' ) . '</li>';
 		$content .= '</ul>';
 
-		$content .= '<h2>' . esc_html__( 'Dónde se almacenan', 'wp-metricas' ) . '</h2>';
-		$content .= '<p>' . esc_html__( 'Los datos se guardan en la base de datos de este sitio web. No se envían a servidores externos.', 'wp-metricas' ) . '</p>';
+		$content .= '<h2>' . esc_html__( 'Dónde se almacenan', 'metricas-analisis-ow' ) . '</h2>';
+		$content .= '<p>' . esc_html__( 'Los datos se guardan en la base de datos de este sitio web. No se envían a servidores externos.', 'metricas-analisis-ow' ) . '</p>';
 
-		$content .= '<h2>' . esc_html__( 'Retención', 'wp-metricas' ) . '</h2>';
-		$content .= '<p>' . esc_html__( 'Los registros se eliminan automáticamente después del período configurado en Métricas y Análisis OW → Configuración.', 'wp-metricas' ) . '</p>';
+		$content .= '<h2>' . esc_html__( 'Retención', 'metricas-analisis-ow' ) . '</h2>';
+		$content .= '<p>' . esc_html__( 'Los registros se eliminan automáticamente después del período configurado en Métricas y Análisis OW → Configuración.', 'metricas-analisis-ow' ) . '</p>';
 
 		wp_add_privacy_policy_content(
 			'Métricas y Análisis OW',
@@ -72,7 +72,7 @@ class WP_Metricas_Privacy {
 	 */
 	public function register_exporter( array $exporters ): array {
 		$exporters[ self::EXPORTER_KEY ] = array(
-			'exporter_friendly_name' => __( 'Métricas y Análisis OW', 'wp-metricas' ),
+			'exporter_friendly_name' => __( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
 			'callback'               => array( $this, 'export_personal_data' ),
 		);
 		return $exporters;
@@ -85,7 +85,7 @@ class WP_Metricas_Privacy {
 	 */
 	public function register_eraser( array $erasers ): array {
 		$erasers[ self::ERASER_KEY ] = array(
-			'eraser_friendly_name' => __( 'Métricas y Análisis OW', 'wp-metricas' ),
+			'eraser_friendly_name' => __( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
 			'callback'             => array( $this, 'erase_personal_data' ),
 		);
 		return $erasers;
@@ -114,79 +114,70 @@ class WP_Metricas_Privacy {
 		$user_id        = (int) $user->ID;
 		$export_data    = array();
 
-		$visits = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT post_title, url, referrer, device_type, visited_at
-				FROM {$visits_table}
-				WHERE user_id = %d
-				ORDER BY visited_at DESC
-				LIMIT 100",
-				$user_id
-			),
-			ARRAY_A
+		$visits = WP_Metricas_DB_Helper::get_results(
+			"SELECT post_title, url, referrer, device_type, visited_at
+			FROM %i
+			WHERE user_id = %d
+			ORDER BY visited_at DESC
+			LIMIT 100",
+			array( $visits_table, $user_id )
 		);
 
 		foreach ( $visits as $row ) {
 			$export_data[] = array(
-				'group_id'          => 'wp-metricas-visits',
-				'group_label'       => __( 'Visitas (Métricas y Análisis OW)', 'wp-metricas' ),
+				'group_id'          => 'metricas-analisis-ow-visits',
+				'group_label'       => __( 'Visitas (Métricas y Análisis OW)', 'metricas-analisis-ow' ),
 				'item_id'           => 'visit-' . md5( wp_json_encode( $row ) ),
 				'data'              => array(
-					array( 'name' => __( 'Página', 'wp-metricas' ), 'value' => $row['post_title'] ),
-					array( 'name' => __( 'URL', 'wp-metricas' ), 'value' => $row['url'] ),
-					array( 'name' => __( 'Referencia', 'wp-metricas' ), 'value' => $row['referrer'] ),
-					array( 'name' => __( 'Dispositivo', 'wp-metricas' ), 'value' => $row['device_type'] ),
-					array( 'name' => __( 'Fecha', 'wp-metricas' ), 'value' => $row['visited_at'] ),
+					array( 'name' => __( 'Página', 'metricas-analisis-ow' ), 'value' => $row['post_title'] ),
+					array( 'name' => __( 'URL', 'metricas-analisis-ow' ), 'value' => $row['url'] ),
+					array( 'name' => __( 'Referencia', 'metricas-analisis-ow' ), 'value' => $row['referrer'] ),
+					array( 'name' => __( 'Dispositivo', 'metricas-analisis-ow' ), 'value' => $row['device_type'] ),
+					array( 'name' => __( 'Fecha', 'metricas-analisis-ow' ), 'value' => $row['visited_at'] ),
 				),
 			);
 		}
 
-		$clicks = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT button_text, button_url, clicked_at
-				FROM {$clicks_table}
-				WHERE user_id = %d
-				ORDER BY clicked_at DESC
-				LIMIT 100",
-				$user_id
-			),
-			ARRAY_A
+		$clicks = WP_Metricas_DB_Helper::get_results(
+			"SELECT button_text, button_url, clicked_at
+			FROM %i
+			WHERE user_id = %d
+			ORDER BY clicked_at DESC
+			LIMIT 100",
+			array( $clicks_table, $user_id )
 		);
 
 		foreach ( $clicks as $row ) {
 			$export_data[] = array(
-				'group_id'    => 'wp-metricas-clicks',
-				'group_label' => __( 'Clics (Métricas y Análisis OW)', 'wp-metricas' ),
+				'group_id'    => 'metricas-analisis-ow-clicks',
+				'group_label' => __( 'Clics (Métricas y Análisis OW)', 'metricas-analisis-ow' ),
 				'item_id'     => 'click-' . md5( wp_json_encode( $row ) ),
 				'data'        => array(
-					array( 'name' => __( 'Botón', 'wp-metricas' ), 'value' => $row['button_text'] ),
-					array( 'name' => __( 'URL', 'wp-metricas' ), 'value' => $row['button_url'] ),
-					array( 'name' => __( 'Fecha', 'wp-metricas' ), 'value' => $row['clicked_at'] ),
+					array( 'name' => __( 'Botón', 'metricas-analisis-ow' ), 'value' => $row['button_text'] ),
+					array( 'name' => __( 'URL', 'metricas-analisis-ow' ), 'value' => $row['button_url'] ),
+					array( 'name' => __( 'Fecha', 'metricas-analisis-ow' ), 'value' => $row['clicked_at'] ),
 				),
 			);
 		}
 
-		$times = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT section_name, duration_seconds, recorded_at
-				FROM {$sections_table}
-				WHERE user_id = %d
-				ORDER BY recorded_at DESC
-				LIMIT 100",
-				$user_id
-			),
-			ARRAY_A
+		$times = WP_Metricas_DB_Helper::get_results(
+			"SELECT section_name, duration_seconds, recorded_at
+			FROM %i
+			WHERE user_id = %d
+			ORDER BY recorded_at DESC
+			LIMIT 100",
+			array( $sections_table, $user_id )
 		);
 
 		foreach ( $times as $row ) {
 			$export_data[] = array(
-				'group_id'    => 'wp-metricas-time',
-				'group_label' => __( 'Tiempo en página (Métricas y Análisis OW)', 'wp-metricas' ),
+				'group_id'    => 'metricas-analisis-ow-time',
+				'group_label' => __( 'Tiempo en página (Métricas y Análisis OW)', 'metricas-analisis-ow' ),
 				'item_id'     => 'time-' . md5( wp_json_encode( $row ) ),
 				'data'        => array(
-					array( 'name' => __( 'Página', 'wp-metricas' ), 'value' => $row['section_name'] ),
-					array( 'name' => __( 'Segundos', 'wp-metricas' ), 'value' => $row['duration_seconds'] ),
-					array( 'name' => __( 'Fecha', 'wp-metricas' ), 'value' => $row['recorded_at'] ),
+					array( 'name' => __( 'Página', 'metricas-analisis-ow' ), 'value' => $row['section_name'] ),
+					array( 'name' => __( 'Segundos', 'metricas-analisis-ow' ), 'value' => $row['duration_seconds'] ),
+					array( 'name' => __( 'Fecha', 'metricas-analisis-ow' ), 'value' => $row['recorded_at'] ),
 				),
 			);
 		}
@@ -228,7 +219,7 @@ class WP_Metricas_Privacy {
 		return array(
 			'items_removed'  => true,
 			'items_retained' => false,
-			'messages'       => array( __( 'Datos de Métricas y Análisis OW eliminados.', 'wp-metricas' ) ),
+			'messages'       => array( __( 'Datos de Métricas y Análisis OW eliminados.', 'metricas-analisis-ow' ) ),
 			'done'           => true,
 		);
 	}
