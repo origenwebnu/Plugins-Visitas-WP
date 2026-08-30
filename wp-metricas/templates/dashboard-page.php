@@ -17,30 +17,22 @@ $default_to   = gmdate( 'Y-m-d' );
 	</h1>
 
 	<div class="wp-metricas-filters">
-		<div class="filter-group">
-			<label for="metricas-date-from"><?php esc_html_e( 'Desde', 'wp-metricas' ); ?></label>
-			<input type="date" id="metricas-date-from" value="<?php echo esc_attr( $default_from ); ?>">
-		</div>
-		<div class="filter-group">
-			<label for="metricas-date-to"><?php esc_html_e( 'Hasta', 'wp-metricas' ); ?></label>
-			<input type="date" id="metricas-date-to" value="<?php echo esc_attr( $default_to ); ?>">
-		</div>
-		<div class="filter-group">
-			<label for="metricas-type-filter"><?php esc_html_e( 'Tipo', 'wp-metricas' ); ?></label>
-			<select id="metricas-type-filter">
-				<option value="all"><?php esc_html_e( 'Todos', 'wp-metricas' ); ?></option>
-				<option value="pages"><?php esc_html_e( 'Páginas', 'wp-metricas' ); ?></option>
-				<option value="posts"><?php esc_html_e( 'Entradas', 'wp-metricas' ); ?></option>
-				<option value="cpt"><?php esc_html_e( 'Custom Post Types', 'wp-metricas' ); ?></option>
-				<option value="acf"><?php esc_html_e( 'Con campos ACF', 'wp-metricas' ); ?></option>
-				<option value="elementor"><?php esc_html_e( 'Páginas Elementor', 'wp-metricas' ); ?></option>
-			</select>
-		</div>
-		<div class="filter-group filter-action">
-			<button type="button" id="metricas-apply-filters" class="button button-primary">
-				<?php esc_html_e( 'Aplicar filtros', 'wp-metricas' ); ?>
-			</button>
-		</div>
+		<label for="metricas-date-from"><?php esc_html_e( 'Desde', 'wp-metricas' ); ?></label>
+		<input type="date" id="metricas-date-from" value="<?php echo esc_attr( $default_from ); ?>">
+		<label for="metricas-date-to"><?php esc_html_e( 'Hasta', 'wp-metricas' ); ?></label>
+		<input type="date" id="metricas-date-to" value="<?php echo esc_attr( $default_to ); ?>">
+		<label for="metricas-type-filter"><?php esc_html_e( 'Tipo', 'wp-metricas' ); ?></label>
+		<select id="metricas-type-filter">
+			<option value="all"><?php esc_html_e( 'Todos', 'wp-metricas' ); ?></option>
+			<option value="pages"><?php esc_html_e( 'Páginas', 'wp-metricas' ); ?></option>
+			<option value="posts"><?php esc_html_e( 'Entradas', 'wp-metricas' ); ?></option>
+			<option value="cpt"><?php esc_html_e( 'Custom Post Types', 'wp-metricas' ); ?></option>
+			<option value="acf"><?php esc_html_e( 'Con campos ACF', 'wp-metricas' ); ?></option>
+			<option value="elementor"><?php esc_html_e( 'Páginas Elementor', 'wp-metricas' ); ?></option>
+		</select>
+		<button type="button" id="metricas-apply-filters" class="button button-primary">
+			<?php esc_html_e( 'Aplicar filtros', 'wp-metricas' ); ?>
+		</button>
 	</div>
 
 	<div id="metricas-loading" class="wp-metricas-loading" style="display:none;">
