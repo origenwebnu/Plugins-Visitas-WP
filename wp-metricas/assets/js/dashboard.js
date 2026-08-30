@@ -16,6 +16,7 @@
 		dateTo: document.getElementById('metricas-date-to'),
 		typeFilter: document.getElementById('metricas-type-filter'),
 		applyBtn: document.getElementById('metricas-apply-filters'),
+		clearBtn: document.getElementById('metricas-clear-filters'),
 		loading: document.getElementById('metricas-loading'),
 		activeVisitors: document.getElementById('metricas-active-visitors'),
 		totalVisits: document.getElementById('metricas-total-visits'),
@@ -23,7 +24,7 @@
 		uniqueSessions: document.getElementById('metricas-unique-sessions'),
 		topContent: document.getElementById('metricas-top-content'),
 		topButtons: document.getElementById('metricas-top-buttons'),
-		sectionTimes: document.getElementById('metricas-section-times')
+		pageTimes: document.getElementById('metricas-page-times')
 	};
 
 	function formatDuration(seconds) {
@@ -99,7 +100,7 @@
 		renderTypesChart(data.visits_by_type || []);
 		renderTopContent(data.top_content || []);
 		renderTopButtons(data.top_buttons || []);
-		renderSectionTimes(data.section_times || []);
+		renderPageTimes(data.page_times || []);
 	}
 
 	function renderVisitsChart(rows) {
@@ -239,21 +240,21 @@
 		}).join('');
 	}
 
-	function renderSectionTimes(rows) {
-		if (!els.sectionTimes) {
+	function renderPageTimes(rows) {
+		if (!els.pageTimes) {
 			return;
 		}
 
 		if (!rows.length) {
-			els.sectionTimes.innerHTML = '<tr><td colspan="4">' + config.i18n.noData + '</td></tr>';
+			els.pageTimes.innerHTML = '<tr><td colspan="5">' + config.i18n.noData + '</td></tr>';
 			return;
 		}
 
-		els.sectionTimes.innerHTML = rows.map(function (row, i) {
-			var name = row.section_name || row.section_id || '—';
+		els.pageTimes.innerHTML = rows.map(function (row, i) {
 			return '<tr>' +
 				'<td>' + (i + 1) + '</td>' +
-				'<td>' + escapeHtml(name) + '</td>' +
+				'<td>' + escapeHtml(row.post_title || '—') + '</td>' +
+				'<td>' + escapeHtml(row.post_type || '—') + '</td>' +
 				'<td>' + formatDuration(row.avg_seconds) + '</td>' +
 				'<td>' + formatDuration(row.total_seconds) + '</td>' +
 				'</tr>';
@@ -268,6 +269,21 @@
 
 	if (els.applyBtn) {
 		els.applyBtn.addEventListener('click', fetchStats);
+	}
+
+	if (els.clearBtn) {
+		els.clearBtn.addEventListener('click', function () {
+			if (els.dateFrom && config.defaultDateFrom) {
+				els.dateFrom.value = config.defaultDateFrom;
+			}
+			if (els.dateTo && config.defaultDateTo) {
+				els.dateTo.value = config.defaultDateTo;
+			}
+			if (els.typeFilter) {
+				els.typeFilter.value = 'all';
+			}
+			fetchStats();
+		});
 	}
 
 	function fetchRealtime() {

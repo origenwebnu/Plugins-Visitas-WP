@@ -1,4 +1,4 @@
-/* WP Métricas - Admin styles */
+/* Métricas y Análisis OW - Admin styles */
 
 .wp-metricas-wrap {
 	max-width: 1400px;
@@ -21,79 +21,109 @@
 	color: #6366f1;
 }
 
-/* Filtros modernos */
-.wp-metricas-filters {
+/* ── Filtros: una sola card, solo inputs con borde ── */
+.wp-metricas-filters-card {
+	background: #fff;
+	border: none;
+	border-radius: 20px;
+	padding: 20px 24px;
+	margin-bottom: 28px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.wp-metricas-filters-title {
+	margin: 0 0 14px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.wp-metricas-filters-row {
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
-	gap: 12px;
-	margin-bottom: 28px;
-	padding: 0;
-	background: transparent;
-	border: none;
+	gap: 10px;
+	width: 100%;
 }
 
-.wp-metricas-filters .filter-group {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	flex-shrink: 0;
-}
-
-.wp-metricas-filters .filter-group.filter-action {
-	margin-left: auto;
-}
-
-.wp-metricas-filters label {
+.wp-metricas-filters-row label {
 	font-weight: 500;
 	font-size: 13px;
 	color: #646970;
 	white-space: nowrap;
 	margin: 0;
+	padding: 0;
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	flex-shrink: 0;
 }
 
-.wp-metricas-filters input[type="date"],
-.wp-metricas-filters select {
-	min-width: 140px;
-	height: 38px;
-	padding: 0 12px;
-	border: none;
-	border-radius: 10px;
+.wp-metricas-filters-row input[type="date"],
+.wp-metricas-filters-row select {
+	min-width: 130px;
+	height: 36px;
+	padding: 0 10px;
+	border: 1px solid #c3c4c7 !important;
+	border-radius: 8px;
 	background: #fff;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+	box-shadow: none !important;
 	font-size: 13px;
 	color: #1d2327;
-	transition: box-shadow 0.2s ease;
+	transition: border-color 0.15s ease;
+	flex-shrink: 0;
 }
 
-.wp-metricas-filters input[type="date"]:focus,
-.wp-metricas-filters select:focus {
+.wp-metricas-filters-row input[type="date"]:focus,
+.wp-metricas-filters-row select:focus {
 	outline: none;
-	box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25), 0 1px 3px rgba(0, 0, 0, 0.06);
+	border-color: #6366f1 !important;
+	box-shadow: 0 0 0 1px #6366f1 !important;
 }
 
-.wp-metricas-filters .button-primary {
-	height: 38px;
-	padding: 0 20px;
-	border-radius: 10px;
+.wp-metricas-filters-row .button-primary:hover {
+	background: #4f46e5;
+}
+
+.wp-metricas-filters-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+	flex-shrink: 0;
+}
+
+.wp-metricas-filters-actions .button {
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 8px;
+	font-size: 13px;
+	line-height: 34px;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+	color: #1d2327;
+	box-shadow: none;
+}
+
+.wp-metricas-filters-actions .button:hover {
+	background: #f6f7f7;
+	border-color: #a7aaad;
+}
+
+.wp-metricas-filters-actions .button-primary {
 	border: none;
 	background: #6366f1;
-	font-size: 13px;
-	font-weight: 500;
-	line-height: 38px;
-	box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
-	transition: background 0.2s ease, box-shadow 0.2s ease;
+	color: #fff;
 }
 
-.wp-metricas-filters .button-primary:hover {
+.wp-metricas-filters-actions .button-primary:hover {
 	background: #4f46e5;
-	box-shadow: 0 4px 8px rgba(99, 102, 241, 0.35);
 }
 
-/* Tarjetas resumen */
+/* ── Tarjetas resumen ── */
 .wp-metricas-cards {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-template-columns: repeat(4, 1fr);
 	gap: 20px;
 	margin-bottom: 28px;
 }
@@ -101,9 +131,9 @@
 .wp-metricas-card {
 	background: #fff;
 	border: none;
-	border-radius: 16px;
+	border-radius: 20px;
 	padding: 24px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	position: relative;
 	overflow: hidden;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -111,30 +141,31 @@
 
 .wp-metricas-card:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .wp-metricas-card::before {
 	content: '';
 	position: absolute;
-	top: 0;
+	top: 16px;
+	bottom: 16px;
 	left: 0;
-	right: 0;
-	height: 3px;
-	background: linear-gradient(90deg, #6366f1, #818cf8);
-	border-radius: 16px 16px 0 0;
+	width: 4px;
+	height: auto;
+	border-radius: 0 4px 4px 0;
+	background: #6366f1;
 }
 
 .wp-metricas-card.clicks::before {
-	background: linear-gradient(90deg, #10b981, #34d399);
+	background: #10b981;
 }
 
 .wp-metricas-card.sessions::before {
-	background: linear-gradient(90deg, #f59e0b, #fbbf24);
+	background: #f59e0b;
 }
 
 .wp-metricas-card.realtime::before {
-	background: linear-gradient(90deg, #ef4444, #f87171);
+	background: #ef4444;
 }
 
 .wp-metricas-card .card-label {
@@ -145,6 +176,7 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	padding-left: 8px;
 }
 
 .wp-metricas-card .card-value {
@@ -153,12 +185,14 @@
 	line-height: 1;
 	color: #1d2327;
 	letter-spacing: -0.02em;
+	padding-left: 8px;
 }
 
 .wp-metricas-card .card-sub {
 	font-size: 12px;
 	color: #a7aaad;
 	margin-top: 6px;
+	padding-left: 8px;
 }
 
 /* Indicador en vivo */
@@ -184,7 +218,7 @@
 	}
 }
 
-/* Gráficas */
+/* ── Gráficas ── */
 .wp-metricas-charts {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -195,9 +229,9 @@
 .wp-metricas-chart-box {
 	background: #fff;
 	border: none;
-	border-radius: 16px;
+	border-radius: 20px;
 	padding: 24px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .wp-metricas-chart-box h3 {
@@ -212,7 +246,7 @@
 	height: 280px;
 }
 
-/* Tablas */
+/* ── Tablas ── */
 .wp-metricas-tables {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -222,9 +256,9 @@
 .wp-metricas-table-box {
 	background: #fff;
 	border: none;
-	border-radius: 16px;
+	border-radius: 20px;
 	padding: 24px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	overflow-x: auto;
 }
 
@@ -265,18 +299,14 @@
 	background: #f9fafb;
 }
 
-.wp-metricas-table-box tbody tr {
-	border-radius: 8px;
-}
-
-/* Configuración */
+/* ── Configuración ── */
 .wp-metricas-settings-form .settings-section {
 	background: #fff;
 	border: none;
-	border-radius: 16px;
+	border-radius: 20px;
 	padding: 24px;
 	margin-bottom: 20px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .wp-metricas-settings-form .settings-section h2 {
@@ -296,8 +326,8 @@
 	font-size: 12px;
 	width: 100%;
 	max-width: 500px;
-	border-radius: 10px;
-	border: 1px solid #f0f0f1;
+	border-radius: 8px;
+	border: 1px solid #c3c4c7;
 }
 
 .wp-metricas-settings-form .cpt-list {
@@ -318,12 +348,22 @@
 	color: #646970;
 }
 
+@media (max-width: 1100px) {
+	.wp-metricas-cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
 @media (max-width: 960px) {
-	.wp-metricas-filters {
+	.wp-metricas-filters-row {
 		flex-wrap: wrap;
 	}
 
-	.wp-metricas-filters .filter-group.filter-action {
+	.wp-metricas-filters-row .button-primary {
+		margin-left: 0;
+	}
+
+	.wp-metricas-filters-actions {
 		margin-left: 0;
 		width: 100%;
 	}
@@ -335,18 +375,18 @@
 		grid-template-columns: 1fr;
 	}
 
-	.wp-metricas-filters {
+	.wp-metricas-cards {
+		grid-template-columns: 1fr;
+	}
+
+	.wp-metricas-filters-row {
 		flex-direction: column;
 		align-items: stretch;
 	}
 
-	.wp-metricas-filters .filter-group {
+	.wp-metricas-filters-row input[type="date"],
+	.wp-metricas-filters-row select {
 		width: 100%;
-	}
-
-	.wp-metricas-filters input[type="date"],
-	.wp-metricas-filters select {
-		flex: 1;
 		min-width: 0;
 	}
 }

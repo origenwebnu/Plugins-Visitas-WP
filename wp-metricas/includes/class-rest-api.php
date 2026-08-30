@@ -186,13 +186,14 @@ class WP_Metricas_REST_API {
 		}
 
 		$post_id = absint( $request->get_param( 'post_id' ) );
+		$post_type = sanitize_text_field( $request->get_param( 'post_type' ) ?: '' );
 
 		$id = WP_Metricas_Database::insert_section_time(
 			array(
 				'post_id'              => $post_id,
 				'section_id'           => sanitize_text_field( $request->get_param( 'section_id' ) ?: '' ),
 				'section_name'         => sanitize_text_field( $request->get_param( 'section_name' ) ?: '' ),
-				'selector'             => sanitize_text_field( $request->get_param( 'selector' ) ?: '' ),
+				'selector'             => $post_type ?: sanitize_text_field( $request->get_param( 'selector' ) ?: '' ),
 				'elementor_section_id' => sanitize_text_field( $request->get_param( 'elementor_section_id' ) ?: '' ),
 				'duration_seconds'     => absint( $request->get_param( 'duration_seconds' ) ),
 				'session_id'           => sanitize_text_field( $request->get_param( 'session_id' ) ?: '' ),
@@ -320,16 +321,29 @@ class WP_Metricas_REST_API {
 			ARRAY_A
 		);
 
-		// Tiempo por sección.
-		$section_times = $wpdb->get_results(
+		$post_type_filter_sections = '';
+		if ( 'pages' === $type ) {
+			$post_type_filter_sections = " AND s.selector = 'page'";
+		} elseif ( 'posts' === $type ) {
+			$post_type_filter_sections = " AND s.selector = 'post'";
+		} elseif ( 'cpt' === $type ) {
+			$post_type_filter_sections = " AND s.selector NOT IN ('page', 'post')";
+		}
+
+		// Tiempo por página/entrada.
+		$page_times = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT section_name, section_id, elementor_section_id,
-					SUM(duration_seconds) as total_seconds,
-					AVG(duration_seconds) as avg_seconds,
-					COUNT(*) as records
-				FROM {$sections_table}
-				WHERE recorded_at BETWEEN %s AND %s
-				GROUP BY section_name, section_id, elementor_section_id
+				"SELECT s.post_id,
+					MAX(s.section_name) as post_title,
+					MAX(s.selector) as post_type,
+					SUM(s.duration_seconds) as total_seconds,
+					AVG(s.duration_seconds) as avg_seconds,
+					COUNT(DISTINCT s.session_id) as sessions
+				FROM {$sections_table} s
+				WHERE s.recorded_at BETWEEN %s AND %s
+					AND s.section_id = 'page-time'
+					{$post_type_filter_sections}
+				GROUP BY s.post_id
 				ORDER BY total_seconds DESC
 				LIMIT 15",
 				$date_from_sql,
@@ -403,7 +417,7 @@ class WP_Metricas_REST_API {
 				'clicks_by_day'   => $clicks_by_day ?: array(),
 				'top_content'     => $top_content ?: array(),
 				'top_buttons'     => $top_buttons ?: array(),
-				'section_times'   => $section_times ?: array(),
+				'page_times'      => $page_times ?: array(),
 				'visits_by_type'  => $visits_by_type ?: array(),
 				'filters'         => array(
 					'date_from' => $date_from,

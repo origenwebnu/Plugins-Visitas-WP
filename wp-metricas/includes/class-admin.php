@@ -31,8 +31,8 @@ class WP_Metricas_Admin {
 	 */
 	public function register_menus(): void {
 		add_menu_page(
-			__( 'Métricas', 'wp-metricas' ),
-			__( 'Métricas', 'wp-metricas' ),
+			__( 'Métricas y Análisis OW', 'wp-metricas' ),
+			__( 'Métricas y Análisis OW', 'wp-metricas' ),
 			'manage_options',
 			'wp-metricas-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' ),
@@ -78,8 +78,8 @@ class WP_Metricas_Admin {
 
 		if ( 'toplevel_page_wp-metricas-dashboard' === $hook || strpos( $hook, 'wp-metricas-dashboard' ) !== false ) {
 			wp_enqueue_script(
-				'chartjs',
-				'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
+				'wp-metricas-chartjs',
+				WP_METRICAS_PLUGIN_URL . 'assets/js/chart.umd.min.js',
 				array(),
 				'4.4.1',
 				true
@@ -88,7 +88,7 @@ class WP_Metricas_Admin {
 			wp_enqueue_script(
 				'wp-metricas-dashboard',
 				WP_METRICAS_PLUGIN_URL . 'assets/js/dashboard.js',
-				array( 'chartjs' ),
+				array( 'wp-metricas-chartjs' ),
 				WP_METRICAS_VERSION,
 				true
 			);
@@ -100,6 +100,8 @@ class WP_Metricas_Admin {
 					'restUrl'          => esc_url_raw( rest_url( 'wp-metricas/v1/stats' ) ),
 					'realtimeUrl'      => esc_url_raw( rest_url( 'wp-metricas/v1/realtime' ) ),
 					'realtimeInterval' => 15000,
+					'defaultDateFrom'  => gmdate( 'Y-m-d', strtotime( '-30 days' ) ),
+					'defaultDateTo'    => gmdate( 'Y-m-d' ),
 					'nonce'            => wp_create_nonce( 'wp_rest' ),
 					'i18n'             => array(
 						'visits'   => __( 'Visitas', 'wp-metricas' ),
