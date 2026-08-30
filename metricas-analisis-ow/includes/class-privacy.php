@@ -106,8 +106,6 @@ class WP_Metricas_Privacy {
 			);
 		}
 
-		global $wpdb;
-
 		$visits_table   = WP_Metricas_Database::visits_table();
 		$clicks_table   = WP_Metricas_Database::clicks_table();
 		$sections_table = WP_Metricas_Database::sections_table();
@@ -212,8 +210,11 @@ class WP_Metricas_Privacy {
 		$clicks_table   = WP_Metricas_Database::clicks_table();
 		$sections_table = WP_Metricas_Database::sections_table();
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->delete( $visits_table, array( 'user_id' => $user_id ), array( '%d' ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->delete( $clicks_table, array( 'user_id' => $user_id ), array( '%d' ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->delete( $sections_table, array( 'user_id' => $user_id ), array( '%d' ) );
 
 		return array(

@@ -3,7 +3,7 @@
  * Plugin Name:       Métricas y Análisis OW
  * Plugin URI:        https://origenweb.co/plugins
  * Description:       Métricas de visitas, clics en botones y tiempo por página. Compatible con Elementor y ACF.
- * Version:           1.1.2
+ * Version:           1.1.3
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Origen Web
