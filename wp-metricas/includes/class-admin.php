@@ -78,8 +78,8 @@ class WP_Metricas_Admin {
 
 		if ( 'toplevel_page_wp-metricas-dashboard' === $hook || strpos( $hook, 'wp-metricas-dashboard' ) !== false ) {
 			wp_enqueue_script(
-				'chartjs',
-				'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
+				'wp-metricas-chartjs',
+				WP_METRICAS_PLUGIN_URL . 'assets/js/chart.umd.min.js',
 				array(),
 				'4.4.1',
 				true
@@ -88,7 +88,7 @@ class WP_Metricas_Admin {
 			wp_enqueue_script(
 				'wp-metricas-dashboard',
 				WP_METRICAS_PLUGIN_URL . 'assets/js/dashboard.js',
-				array( 'chartjs' ),
+				array( 'wp-metricas-chartjs' ),
 				WP_METRICAS_VERSION,
 				true
 			);

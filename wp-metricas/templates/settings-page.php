@@ -109,15 +109,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<p class="description"><?php esc_html_e( 'Un selector CSS por línea. Por defecto incluye .elementor-button y botones comunes.', 'wp-metricas' ); ?></p>
 					</td>
 				</tr>
-				<tr>
-					<th scope="row">
-						<label for="section_selectors"><?php esc_html_e( 'Selectores de secciones', 'wp-metricas' ); ?></label>
-					</th>
-					<td>
-						<textarea name="<?php echo esc_attr( WP_Metricas_Settings::OPTION_KEY ); ?>[section_selectors]" id="section_selectors" rows="6" class="code"><?php echo esc_textarea( implode( "\n", $settings['section_selectors'] ) ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Un selector CSS por línea. Por defecto incluye .elementor-section.', 'wp-metricas' ); ?></p>
-					</td>
-				</tr>
 			</table>
 		</div>
 
@@ -146,10 +137,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<td>
 						<input type="number" name="<?php echo esc_attr( WP_Metricas_Settings::OPTION_KEY ); ?>[retention_days]" id="retention_days" value="<?php echo esc_attr( $settings['retention_days'] ); ?>" min="7" max="365" step="1">
 						<?php esc_html_e( 'días', 'wp-metricas' ); ?>
-						<p class="description"><?php esc_html_e( 'Los datos más antiguos se eliminarán automáticamente (próxima versión).', 'wp-metricas' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Los registros más antiguos se eliminan automáticamente cada día.', 'wp-metricas' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Desinstalación', 'wp-metricas' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="<?php echo esc_attr( WP_Metricas_Settings::OPTION_KEY ); ?>[delete_data_on_uninstall]" value="1" <?php checked( $settings['delete_data_on_uninstall'] ); ?>>
+							<?php esc_html_e( 'Eliminar todos los datos al desinstalar el plugin', 'wp-metricas' ); ?>
+						</label>
 					</td>
 				</tr>
 			</table>
+		</div>
+
+		<div class="settings-section">
+			<h2><?php esc_html_e( 'Privacidad', 'wp-metricas' ); ?></h2>
+			<p class="description">
+				<?php
+				echo wp_kses(
+					sprintf(
+						/* translators: %s: link to privacy settings page */
+						__( 'Este plugin recopila datos de navegación de forma anónima. Puedes añadir la información de privacidad sugerida en %s.', 'wp-metricas' ),
+						'<a href="' . esc_url( admin_url( 'options-privacy.php' ) ) . '">' . esc_html__( 'Ajustes → Privacidad', 'wp-metricas' ) . '</a>'
+					),
+					array(
+						'a' => array(
+							'href' => array(),
+						),
+					)
+				);
+				?>
+			</p>
 		</div>
 
 		<?php submit_button( __( 'Guardar configuración', 'wp-metricas' ) ); ?>

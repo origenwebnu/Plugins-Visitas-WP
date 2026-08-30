@@ -44,13 +44,6 @@ class WP_Metricas_Database {
 	}
 
 	/**
-	 * Desactiva el plugin.
-	 */
-	public static function deactivate(): void {
-		// Mantener datos al desactivar.
-	}
-
-	/**
 	 * Actualiza esquema si es necesario.
 	 */
 	public static function maybe_upgrade(): void {
@@ -224,5 +217,68 @@ class WP_Metricas_Database {
 		);
 
 		return $result ? $wpdb->insert_id : false;
+	}
+
+	/**
+	 * Elimina registros más antiguos que el período de retención configurado.
+	 *
+	 * @return int Número total de filas eliminadas.
+	 */
+	public static function delete_old_data(): int {
+		global $wpdb;
+
+		$days = (int) WP_Metricas_Settings::get( 'retention_days', 90 );
+		$days = max( 7, min( 365, $days ) );
+		$cutoff = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
+
+		$deleted = 0;
+		$tables  = array(
+			array(
+				'table' => self::visits_table(),
+				'column' => 'visited_at',
+			),
+			array(
+				'table' => self::clicks_table(),
+				'column' => 'clicked_at',
+			),
+			array(
+				'table' => self::sections_table(),
+				'column' => 'recorded_at',
+			),
+		);
+
+		foreach ( $tables as $item ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$deleted += (int) $wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM {$item['table']} WHERE {$item['column']} < %s",
+					$cutoff
+				)
+			);
+		}
+
+		return $deleted;
+	}
+
+	/**
+	 * Elimina todas las tablas y opciones del plugin.
+	 */
+	public static function drop_tables_and_options(): void {
+		global $wpdb;
+
+		$tables = array(
+			self::visits_table(),
+			self::clicks_table(),
+			self::sections_table(),
+		);
+
+		foreach ( $tables as $table ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+		}
+
+		delete_option( 'wp_metricas_settings' );
+		delete_option( 'wp_metricas_db_version' );
+		delete_option( 'wp_metricas_active_sessions' );
 	}
 }

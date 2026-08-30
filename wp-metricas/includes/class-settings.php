@@ -41,6 +41,7 @@ class WP_Metricas_Settings {
 			'track_elementor'       => true,
 			'exclude_admins'          => true,
 			'exclude_logged_in'       => false,
+			'delete_data_on_uninstall' => false,
 			'retention_days'          => 90,
 			'custom_post_types'       => array(),
 			'button_selectors'        => array(
@@ -117,6 +118,7 @@ class WP_Metricas_Settings {
 			'track_elementor',
 			'exclude_admins',
 			'exclude_logged_in',
+			'delete_data_on_uninstall',
 		);
 
 		foreach ( $bool_keys as $key ) {
