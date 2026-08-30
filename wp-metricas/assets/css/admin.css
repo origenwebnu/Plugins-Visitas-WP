@@ -21,68 +21,60 @@
 	color: #6366f1;
 }
 
-/* ── Filtros: una sola línea, sin caja contenedora ── */
-.wp-metricas-filters {
+/* ── Filtros: una sola card, solo inputs con borde ── */
+.wp-metricas-filters-card {
+	background: #fff;
+	border: none;
+	border-radius: 20px;
+	padding: 16px 24px;
+	margin-bottom: 28px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.wp-metricas-filters-row {
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
 	gap: 10px;
-	margin-bottom: 28px;
-	padding: 0;
-	background: none;
-	border: none;
-	box-shadow: none;
+	width: 100%;
 }
 
-.wp-metricas-filters .filter-group {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	flex-shrink: 0;
-	background: none;
-	border: none;
-	box-shadow: none;
-	padding: 0;
-	margin: 0;
-}
-
-.wp-metricas-filters .filter-group.filter-action {
-	margin-left: 4px;
-}
-
-.wp-metricas-filters label {
+.wp-metricas-filters-row label {
 	font-weight: 500;
 	font-size: 13px;
 	color: #646970;
 	white-space: nowrap;
 	margin: 0;
 	padding: 0;
-	background: none;
-	border: none;
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	flex-shrink: 0;
 }
 
-.wp-metricas-filters input[type="date"],
-.wp-metricas-filters select {
+.wp-metricas-filters-row input[type="date"],
+.wp-metricas-filters-row select {
 	min-width: 130px;
 	height: 36px;
 	padding: 0 10px;
-	border: 1px solid #c3c4c7;
+	border: 1px solid #c3c4c7 !important;
 	border-radius: 8px;
 	background: #fff;
-	box-shadow: none;
+	box-shadow: none !important;
 	font-size: 13px;
 	color: #1d2327;
 	transition: border-color 0.15s ease;
+	flex-shrink: 0;
 }
 
-.wp-metricas-filters input[type="date"]:focus,
-.wp-metricas-filters select:focus {
+.wp-metricas-filters-row input[type="date"]:focus,
+.wp-metricas-filters-row select:focus {
 	outline: none;
-	border-color: #6366f1;
-	box-shadow: 0 0 0 1px #6366f1;
+	border-color: #6366f1 !important;
+	box-shadow: 0 0 0 1px #6366f1 !important;
 }
 
-.wp-metricas-filters .button-primary {
+.wp-metricas-filters-row .button-primary {
 	height: 36px;
 	padding: 0 18px;
 	border-radius: 8px;
@@ -94,9 +86,11 @@
 	box-shadow: none;
 	transition: background 0.15s ease;
 	white-space: nowrap;
+	margin-left: auto;
+	flex-shrink: 0;
 }
 
-.wp-metricas-filters .button-primary:hover {
+.wp-metricas-filters-row .button-primary:hover {
 	background: #4f46e5;
 }
 
@@ -335,8 +329,13 @@
 }
 
 @media (max-width: 960px) {
-	.wp-metricas-filters {
+	.wp-metricas-filters-row {
 		flex-wrap: wrap;
+	}
+
+	.wp-metricas-filters-row .button-primary {
+		margin-left: 0;
+		width: 100%;
 	}
 }
 
@@ -350,18 +349,14 @@
 		grid-template-columns: 1fr;
 	}
 
-	.wp-metricas-filters {
+	.wp-metricas-filters-row {
 		flex-direction: column;
 		align-items: stretch;
 	}
 
-	.wp-metricas-filters .filter-group {
+	.wp-metricas-filters-row input[type="date"],
+	.wp-metricas-filters-row select {
 		width: 100%;
-	}
-
-	.wp-metricas-filters input[type="date"],
-	.wp-metricas-filters select {
-		flex: 1;
 		min-width: 0;
 	}
 }
