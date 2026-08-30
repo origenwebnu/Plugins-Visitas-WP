@@ -17,6 +17,7 @@ $default_to   = gmdate( 'Y-m-d' );
 	</h1>
 
 	<div class="wp-metricas-filters-card">
+		<h2 class="wp-metricas-filters-title"><?php esc_html_e( 'Visitas: fechas', 'wp-metricas' ); ?></h2>
 		<div class="wp-metricas-filters-row">
 			<label for="metricas-date-from"><?php esc_html_e( 'Desde', 'wp-metricas' ); ?></label>
 			<input type="date" id="metricas-date-from" value="<?php echo esc_attr( $default_from ); ?>">
@@ -31,9 +32,14 @@ $default_to   = gmdate( 'Y-m-d' );
 				<option value="acf"><?php esc_html_e( 'Con campos ACF', 'wp-metricas' ); ?></option>
 				<option value="elementor"><?php esc_html_e( 'Páginas Elementor', 'wp-metricas' ); ?></option>
 			</select>
-			<button type="button" id="metricas-apply-filters" class="button button-primary">
-				<?php esc_html_e( 'Aplicar filtros', 'wp-metricas' ); ?>
-			</button>
+			<div class="wp-metricas-filters-actions">
+				<button type="button" id="metricas-clear-filters" class="button">
+					<?php esc_html_e( 'Limpiar filtros', 'wp-metricas' ); ?>
+				</button>
+				<button type="button" id="metricas-apply-filters" class="button button-primary">
+					<?php esc_html_e( 'Aplicar filtros', 'wp-metricas' ); ?>
+				</button>
+			</div>
 		</div>
 	</div>
 
@@ -122,18 +128,19 @@ $default_to   = gmdate( 'Y-m-d' );
 		</div>
 
 		<div class="wp-metricas-table-box">
-			<h3><?php esc_html_e( 'Tiempo por sección', 'wp-metricas' ); ?></h3>
+			<h3><?php esc_html_e( 'Tiempo por página', 'wp-metricas' ); ?></h3>
 			<table>
 				<thead>
 					<tr>
 						<th>#</th>
-						<th><?php esc_html_e( 'Sección', 'wp-metricas' ); ?></th>
+						<th><?php esc_html_e( 'Título', 'wp-metricas' ); ?></th>
+						<th><?php esc_html_e( 'Tipo', 'wp-metricas' ); ?></th>
 						<th><?php esc_html_e( 'Tiempo promedio', 'wp-metricas' ); ?></th>
 						<th><?php esc_html_e( 'Tiempo total', 'wp-metricas' ); ?></th>
 					</tr>
 				</thead>
-				<tbody id="metricas-section-times">
-					<tr><td colspan="4"><?php esc_html_e( 'Cargando...', 'wp-metricas' ); ?></td></tr>
+				<tbody id="metricas-page-times">
+					<tr><td colspan="5"><?php esc_html_e( 'Cargando...', 'wp-metricas' ); ?></td></tr>
 				</tbody>
 			</table>
 		</div>

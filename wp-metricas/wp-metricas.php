@@ -3,7 +3,7 @@
  * Plugin Name: WP Métricas
  * Plugin URI: https://origenweb.co/plugins
  * Description: Métricas de visitas, clics en botones y tiempo por sección. Compatible con Elementor y ACF.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Origen Web
  * Author URI: https://origenweb.co/plugins
  * Text Domain: wp-metricas
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WP_METRICAS_VERSION', '1.0.2' );
+define( 'WP_METRICAS_VERSION', '1.0.3' );
 define( 'WP_METRICAS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

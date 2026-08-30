@@ -100,6 +100,8 @@ class WP_Metricas_Admin {
 					'restUrl'          => esc_url_raw( rest_url( 'wp-metricas/v1/stats' ) ),
 					'realtimeUrl'      => esc_url_raw( rest_url( 'wp-metricas/v1/realtime' ) ),
 					'realtimeInterval' => 15000,
+					'defaultDateFrom'  => gmdate( 'Y-m-d', strtotime( '-30 days' ) ),
+					'defaultDateTo'    => gmdate( 'Y-m-d' ),
 					'nonce'            => wp_create_nonce( 'wp_rest' ),
 					'i18n'             => array(
 						'visits'   => __( 'Visitas', 'wp-metricas' ),

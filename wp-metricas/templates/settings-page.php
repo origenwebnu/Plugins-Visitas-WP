@@ -89,7 +89,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</label><br>
 							<label>
 								<input type="checkbox" name="<?php echo esc_attr( WP_Metricas_Settings::OPTION_KEY ); ?>[track_sections]" value="1" <?php checked( $settings['track_sections'] ); ?>>
-								<?php esc_html_e( 'Tiempo en cada sección (incluye secciones de Elementor)', 'wp-metricas' ); ?>
+								<?php esc_html_e( 'Tiempo en páginas, entradas y contenido', 'wp-metricas' ); ?>
 							</label>
 						</fieldset>
 					</td>
