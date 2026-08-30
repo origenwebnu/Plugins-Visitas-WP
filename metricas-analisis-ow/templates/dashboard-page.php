@@ -7,8 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$maow_default_from = gmdate( 'Y-m-d', strtotime( '-30 days' ) );
-$maow_default_to   = gmdate( 'Y-m-d' );
+$metricas_analisis_ow_default_from = gmdate( 'Y-m-d', strtotime( '-30 days' ) );
+$metricas_analisis_ow_default_to   = gmdate( 'Y-m-d' );
 ?>
 <div class="wrap wp-metricas-wrap">
 	<h1>
@@ -20,9 +20,9 @@ $maow_default_to   = gmdate( 'Y-m-d' );
 		<h2 class="wp-metricas-filters-title"><?php esc_html_e( 'Visitas: fechas', 'metricas-analisis-ow' ); ?></h2>
 		<div class="wp-metricas-filters-row">
 			<label for="metricas-date-from"><?php esc_html_e( 'Desde', 'metricas-analisis-ow' ); ?></label>
-			<input type="date" id="metricas-date-from" value="<?php echo esc_attr( $maow_default_from ); ?>">
+			<input type="date" id="metricas-date-from" value="<?php echo esc_attr( $metricas_analisis_ow_default_from ); ?>">
 			<label for="metricas-date-to"><?php esc_html_e( 'Hasta', 'metricas-analisis-ow' ); ?></label>
-			<input type="date" id="metricas-date-to" value="<?php echo esc_attr( $maow_default_to ); ?>">
+			<input type="date" id="metricas-date-to" value="<?php echo esc_attr( $metricas_analisis_ow_default_to ); ?>">
 			<label for="metricas-type-filter"><?php esc_html_e( 'Tipo', 'metricas-analisis-ow' ); ?></label>
 			<select id="metricas-type-filter">
 				<option value="all"><?php esc_html_e( 'Todos', 'metricas-analisis-ow' ); ?></option>

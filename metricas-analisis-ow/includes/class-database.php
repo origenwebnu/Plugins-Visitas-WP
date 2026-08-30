@@ -232,27 +232,33 @@ class WP_Metricas_Database {
 		$cutoff = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
 		$deleted = 0;
-		$tables  = array(
-			self::visits_table()   => 'visited_at',
-			self::clicks_table()   => 'clicked_at',
-			self::sections_table() => 'recorded_at',
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$deleted += (int) $wpdb->query(
+			$wpdb->prepare(
+				'DELETE FROM %i WHERE visited_at < %s',
+				self::visits_table(),
+				$cutoff
+			)
 		);
 
-		foreach ( $tables as $table => $column ) {
-			if ( ! WP_Metricas_DB_Helper::is_valid_table( $table ) || ! WP_Metricas_DB_Helper::is_valid_date_column( $column ) ) {
-				continue;
-			}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$deleted += (int) $wpdb->query(
+			$wpdb->prepare(
+				'DELETE FROM %i WHERE clicked_at < %s',
+				self::clicks_table(),
+				$cutoff
+			)
+		);
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-			$deleted += (int) $wpdb->query(
-				$wpdb->prepare(
-					'DELETE FROM %i WHERE %i < %s',
-					$table,
-					$column,
-					$cutoff
-				)
-			);
-		}
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$deleted += (int) $wpdb->query(
+			$wpdb->prepare(
+				'DELETE FROM %i WHERE recorded_at < %s',
+				self::sections_table(),
+				$cutoff
+			)
+		);
 
 		return $deleted;
 	}
