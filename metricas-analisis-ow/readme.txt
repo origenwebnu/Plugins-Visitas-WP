@@ -1,10 +1,10 @@
 === Métricas y Análisis OW ===
 Contributors: origenweb
 Tags: analytics, metrics, statistics, elementor, tracking
-Requires at least: 5.8
+Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,13 @@ Set the retention days in **Métricas y Análisis OW → Settings**. The plugin 
 
 == Changelog ==
 
+= 1.1.4 =
+* Requires WordPress 6.2+ (needed for safe %i SQL placeholders)
+* Fixed Plugin Check variable prefix warnings in templates
+
+= 1.1.3 =
+* Additional Plugin Check suppressions for safe %i table queries
+
 = 1.1.2 =
 * Plugin Check fixes: English readme, safe database queries, slug rename
 * Plugin slug changed to metricas-analisis-ow (WordPress.org requirement)
@@ -94,6 +101,12 @@ Set the retention days in **Métricas y Análisis OW → Settings**. The plugin 
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.1.4 =
+Requires WordPress 6.2 or higher.
+
+= 1.1.3 =
+Plugin Check compatibility improvements for database helpers.
 
 = 1.1.2 =
 WordPress.org compliance update. New plugin folder slug: metricas-analisis-ow.

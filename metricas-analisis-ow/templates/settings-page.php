@@ -59,14 +59,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<td>
 						<p class="description"><?php esc_html_e( 'Selecciona los CPT específicos a rastrear. Si no seleccionas ninguno, se rastrearán todos los públicos.', 'metricas-analisis-ow' ); ?></p>
 						<div class="cpt-list">
-							<?php foreach ( $post_types as $maow_pt ) : ?>
+							<?php foreach ( $post_types as $metricas_analisis_ow_pt ) : ?>
 								<label>
 									<input type="checkbox"
 										name="<?php echo esc_attr( WP_Metricas_Settings::OPTION_KEY ); ?>[custom_post_types][]"
-										value="<?php echo esc_attr( $maow_pt->name ); ?>"
-										<?php checked( in_array( $maow_pt->name, $settings['custom_post_types'], true ) ); ?>>
-									<?php echo esc_html( $maow_pt->labels->singular_name ); ?>
-									<code>(<?php echo esc_html( $maow_pt->name ); ?>)</code>
+										value="<?php echo esc_attr( $metricas_analisis_ow_pt->name ); ?>"
+										<?php checked( in_array( $metricas_analisis_ow_pt->name, $settings['custom_post_types'], true ) ); ?>>
+									<?php echo esc_html( $metricas_analisis_ow_pt->labels->singular_name ); ?>
+									<code>(<?php echo esc_html( $metricas_analisis_ow_pt->name ); ?>)</code>
 								</label>
 							<?php endforeach; ?>
 						</div>
