@@ -1,0 +1,134 @@
+<?php
+/**
+ * Menús y páginas de administración.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class WP_Metricas_Admin {
+
+	/**
+	 * @var WP_Metricas_Admin|null
+	 */
+	private static $instance = null;
+
+	public static function instance(): WP_Metricas_Admin {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	private function __construct() {
+		add_action( 'admin_menu', array( $this, 'register_menus' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+	}
+
+	/**
+	 * Registra menús en el admin de WordPress.
+	 */
+	public function register_menus(): void {
+		add_menu_page(
+			__( 'Métricas', 'wp-metricas' ),
+			__( 'Métricas', 'wp-metricas' ),
+			'manage_options',
+			'wp-metricas-dashboard',
+			array( WP_Metricas_Dashboard::instance(), 'render_page' ),
+			'dashicons-chart-area',
+			30
+		);
+
+		add_submenu_page(
+			'wp-metricas-dashboard',
+			__( 'Dashboard', 'wp-metricas' ),
+			__( 'Dashboard', 'wp-metricas' ),
+			'manage_options',
+			'wp-metricas-dashboard',
+			array( WP_Metricas_Dashboard::instance(), 'render_page' )
+		);
+
+		add_submenu_page(
+			'wp-metricas-dashboard',
+			__( 'Configuración', 'wp-metricas' ),
+			__( 'Configuración', 'wp-metricas' ),
+			'manage_options',
+			'wp-metricas-settings',
+			array( $this, 'render_settings_page' )
+		);
+	}
+
+	/**
+	 * Encola assets del admin.
+	 *
+	 * @param string $hook Página actual.
+	 */
+	public function enqueue_admin_assets( string $hook ): void {
+		if ( strpos( $hook, 'wp-metricas' ) === false ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'wp-metricas-admin',
+			WP_METRICAS_PLUGIN_URL . 'assets/css/admin.css',
+			array(),
+			WP_METRICAS_VERSION
+		);
+
+		if ( 'toplevel_page_wp-metricas-dashboard' === $hook || strpos( $hook, 'wp-metricas-dashboard' ) !== false ) {
+			wp_enqueue_script(
+				'chartjs',
+				'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
+				array(),
+				'4.4.1',
+				true
+			);
+
+			wp_enqueue_script(
+				'wp-metricas-dashboard',
+				WP_METRICAS_PLUGIN_URL . 'assets/js/dashboard.js',
+				array( 'chartjs' ),
+				WP_METRICAS_VERSION,
+				true
+			);
+
+			wp_localize_script(
+				'wp-metricas-dashboard',
+				'wpMetricasDashboard',
+				array(
+					'restUrl' => esc_url_raw( rest_url( 'wp-metricas/v1/stats' ) ),
+					'nonce'   => wp_create_nonce( 'wp_rest' ),
+					'i18n'    => array(
+						'visits'   => __( 'Visitas', 'wp-metricas' ),
+						'clicks'   => __( 'Clics', 'wp-metricas' ),
+						'loading'  => __( 'Cargando...', 'wp-metricas' ),
+						'noData'   => __( 'Sin datos para el período seleccionado', 'wp-metricas' ),
+						'seconds'  => __( 'segundos', 'wp-metricas' ),
+						'minutes'  => __( 'minutos', 'wp-metricas' ),
+					),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Renderiza la página de configuración.
+	 */
+	public function render_settings_page(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$settings = WP_Metricas_Settings::get_all();
+		$post_types = get_post_types(
+			array(
+				'public'   => true,
+				'_builtin' => false,
+			),
+			'objects'
+		);
+
+		include WP_METRICAS_PLUGIN_DIR . 'templates/settings-page.php';
+	}
+}
