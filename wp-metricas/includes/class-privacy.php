@@ -41,7 +41,7 @@ class WP_Metricas_Privacy {
 		$content = sprintf(
 			/* translators: %s: plugin name */
 			__( 'Este sitio utiliza el plugin %s para medir visitas, clics en botones y tiempo de permanencia en páginas con fines estadísticos.', 'wp-metricas' ),
-			'<strong>WP Métricas</strong>'
+			'<strong>Métricas y Análisis OW</strong>'
 		);
 
 		$content .= '<h2>' . esc_html__( 'Qué datos se recopilan', 'wp-metricas' ) . '</h2>';
@@ -57,10 +57,10 @@ class WP_Metricas_Privacy {
 		$content .= '<p>' . esc_html__( 'Los datos se guardan en la base de datos de este sitio web. No se envían a servidores externos.', 'wp-metricas' ) . '</p>';
 
 		$content .= '<h2>' . esc_html__( 'Retención', 'wp-metricas' ) . '</h2>';
-		$content .= '<p>' . esc_html__( 'Los registros se eliminan automáticamente después del período configurado en Métricas → Configuración.', 'wp-metricas' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'Los registros se eliminan automáticamente después del período configurado en Métricas y Análisis OW → Configuración.', 'wp-metricas' ) . '</p>';
 
 		wp_add_privacy_policy_content(
-			'WP Métricas',
+			'Métricas y Análisis OW',
 			wp_kses_post( $content )
 		);
 	}
@@ -72,7 +72,7 @@ class WP_Metricas_Privacy {
 	 */
 	public function register_exporter( array $exporters ): array {
 		$exporters[ self::EXPORTER_KEY ] = array(
-			'exporter_friendly_name' => __( 'WP Métricas', 'wp-metricas' ),
+			'exporter_friendly_name' => __( 'Métricas y Análisis OW', 'wp-metricas' ),
 			'callback'               => array( $this, 'export_personal_data' ),
 		);
 		return $exporters;
@@ -85,7 +85,7 @@ class WP_Metricas_Privacy {
 	 */
 	public function register_eraser( array $erasers ): array {
 		$erasers[ self::ERASER_KEY ] = array(
-			'eraser_friendly_name' => __( 'WP Métricas', 'wp-metricas' ),
+			'eraser_friendly_name' => __( 'Métricas y Análisis OW', 'wp-metricas' ),
 			'callback'             => array( $this, 'erase_personal_data' ),
 		);
 		return $erasers;
@@ -129,7 +129,7 @@ class WP_Metricas_Privacy {
 		foreach ( $visits as $row ) {
 			$export_data[] = array(
 				'group_id'          => 'wp-metricas-visits',
-				'group_label'       => __( 'Visitas (WP Métricas)', 'wp-metricas' ),
+				'group_label'       => __( 'Visitas (Métricas y Análisis OW)', 'wp-metricas' ),
 				'item_id'           => 'visit-' . md5( wp_json_encode( $row ) ),
 				'data'              => array(
 					array( 'name' => __( 'Página', 'wp-metricas' ), 'value' => $row['post_title'] ),
@@ -156,7 +156,7 @@ class WP_Metricas_Privacy {
 		foreach ( $clicks as $row ) {
 			$export_data[] = array(
 				'group_id'    => 'wp-metricas-clicks',
-				'group_label' => __( 'Clics (WP Métricas)', 'wp-metricas' ),
+				'group_label' => __( 'Clics (Métricas y Análisis OW)', 'wp-metricas' ),
 				'item_id'     => 'click-' . md5( wp_json_encode( $row ) ),
 				'data'        => array(
 					array( 'name' => __( 'Botón', 'wp-metricas' ), 'value' => $row['button_text'] ),
@@ -181,7 +181,7 @@ class WP_Metricas_Privacy {
 		foreach ( $times as $row ) {
 			$export_data[] = array(
 				'group_id'    => 'wp-metricas-time',
-				'group_label' => __( 'Tiempo en página (WP Métricas)', 'wp-metricas' ),
+				'group_label' => __( 'Tiempo en página (Métricas y Análisis OW)', 'wp-metricas' ),
 				'item_id'     => 'time-' . md5( wp_json_encode( $row ) ),
 				'data'        => array(
 					array( 'name' => __( 'Página', 'wp-metricas' ), 'value' => $row['section_name'] ),
@@ -228,7 +228,7 @@ class WP_Metricas_Privacy {
 		return array(
 			'items_removed'  => true,
 			'items_retained' => false,
-			'messages'       => array( __( 'Datos de WP Métricas eliminados.', 'wp-metricas' ) ),
+			'messages'       => array( __( 'Datos de Métricas y Análisis OW eliminados.', 'wp-metricas' ) ),
 			'done'           => true,
 		);
 	}

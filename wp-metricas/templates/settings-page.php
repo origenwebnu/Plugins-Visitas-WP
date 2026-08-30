@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wrap wp-metricas-wrap">
 	<h1>
 		<span class="dashicons dashicons-admin-settings"></span>
-		<?php esc_html_e( 'Configuración de Métricas', 'wp-metricas' ); ?>
+		<?php esc_html_e( 'Configuración de Métricas y Análisis OW', 'wp-metricas' ); ?>
 	</h1>
 
 	<p class="description">

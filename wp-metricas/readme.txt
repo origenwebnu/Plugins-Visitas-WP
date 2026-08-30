@@ -1,10 +1,10 @@
-=== WP Métricas ===
-Contributors: origenwebnu
+=== Métricas y Análisis OW ===
+Contributors: origenweb
 Tags: analytics, metrics, statistics, elementor, tracking
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Métricas de visitas, clics en botones y tiempo por página para WordPress. Comp
 
 == Description ==
 
-**WP Métricas** es un plugin de analítica ligero que funciona dentro de tu WordPress, sin depender de servicios externos.
+**Métricas y Análisis OW** es un plugin de analítica ligero que funciona dentro de tu WordPress, sin depender de servicios externos.
 
 = Características =
 
@@ -42,8 +42,8 @@ Métricas de visitas, clics en botones y tiempo por página para WordPress. Comp
 
 1. Sube la carpeta `wp-metricas` al directorio `/wp-content/plugins/`
 2. Activa el plugin desde el menú **Plugins** en WordPress
-3. Ve a **Métricas → Configuración** para elegir qué medir
-4. Ve a **Métricas → Dashboard** para ver las estadísticas
+3. Ve a **Métricas y Análisis OW → Configuración** para elegir qué medir
+4. Ve a **Métricas y Análisis OW → Dashboard** para ver las estadísticas
 5. (Recomendado) Revisa **Ajustes → Privacidad** y añade la política sugerida por el plugin
 
 == Frequently Asked Questions ==
@@ -58,7 +58,7 @@ Sí. Identifica contenido con campos ACF y permite filtrarlo en el dashboard.
 
 = ¿Rastrea a los administradores? =
 
-Por defecto no. Puedes cambiarlo en **Métricas → Configuración**.
+Por defecto no. Puedes cambiarlo en **Métricas y Análisis OW → Configuración**.
 
 = ¿Se envían datos a servidores externos? =
 
@@ -66,7 +66,7 @@ No. Todas las métricas se guardan en tu propia base de datos.
 
 = ¿Cómo se eliminan los datos antiguos? =
 
-Configura los días de retención en **Métricas → Configuración**. El plugin ejecuta una limpieza diaria automática.
+Configura los días de retención en **Métricas y Análisis OW → Configuración**. El plugin ejecuta una limpieza diaria automática.
 
 == Screenshots ==
 
@@ -75,6 +75,9 @@ Configura los días de retención en **Métricas → Configuración**. El plugin
 3. Filtros por fecha y tipo de contenido
 
 == Changelog ==
+
+= 1.1.1 =
+* Nombre del plugin actualizado a Métricas y Análisis OW
 
 = 1.1.0 =
 * Preparación para WordPress.org
@@ -98,8 +101,8 @@ Configura los días de retención en **Métricas → Configuración**. El plugin
 
 == Upgrade Notice ==
 
-= 1.1.0 =
-Versión preparada para el directorio de WordPress. Incluye privacidad, retención de datos y Chart.js local.
+= 1.1.1 =
+Actualización de nombre del plugin a Métricas y Análisis OW.
 
 == Privacy Policy ==
 

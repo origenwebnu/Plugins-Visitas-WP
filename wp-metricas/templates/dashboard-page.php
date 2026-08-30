@@ -13,7 +13,7 @@ $default_to   = gmdate( 'Y-m-d' );
 <div class="wrap wp-metricas-wrap">
 	<h1>
 		<span class="dashicons dashicons-chart-area"></span>
-		<?php esc_html_e( 'Dashboard de Métricas', 'wp-metricas' ); ?>
+		<?php esc_html_e( 'Dashboard de Métricas y Análisis OW', 'wp-metricas' ); ?>
 	</h1>
 
 	<div class="wp-metricas-filters-card">

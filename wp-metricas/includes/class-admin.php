@@ -31,8 +31,8 @@ class WP_Metricas_Admin {
 	 */
 	public function register_menus(): void {
 		add_menu_page(
-			__( 'Métricas', 'wp-metricas' ),
-			__( 'Métricas', 'wp-metricas' ),
+			__( 'Métricas y Análisis OW', 'wp-metricas' ),
+			__( 'Métricas y Análisis OW', 'wp-metricas' ),
 			'manage_options',
 			'wp-metricas-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' ),
