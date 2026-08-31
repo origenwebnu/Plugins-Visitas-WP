@@ -12,9 +12,9 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/class-cron.php';
 
 WP_Metricas_Cron::unschedule();
 
-$metricas_analisis_ow_settings = get_option( 'wp_metricas_settings', array() );
+$origen_web_analytics_settings = get_option( 'wp_metricas_settings', array() );
 
-if ( empty( $metricas_analisis_ow_settings['delete_data_on_uninstall'] ) ) {
+if ( empty( $origen_web_analytics_settings['delete_data_on_uninstall'] ) ) {
 	return;
 }
 
