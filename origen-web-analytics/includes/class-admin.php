@@ -31,30 +31,30 @@ class WP_Metricas_Admin {
 	 */
 	public function register_menus(): void {
 		add_menu_page(
-			__( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
-			__( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
+			__( 'Origen Web Analytics', 'origen-web-analytics' ),
+			__( 'Origen Web Analytics', 'origen-web-analytics' ),
 			'manage_options',
-			'metricas-analisis-ow-dashboard',
+			'origen-web-analytics-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' ),
 			'dashicons-chart-area',
 			30
 		);
 
 		add_submenu_page(
-			'metricas-analisis-ow-dashboard',
-			__( 'Dashboard', 'metricas-analisis-ow' ),
-			__( 'Dashboard', 'metricas-analisis-ow' ),
+			'origen-web-analytics-dashboard',
+			__( 'Dashboard', 'origen-web-analytics' ),
+			__( 'Dashboard', 'origen-web-analytics' ),
 			'manage_options',
-			'metricas-analisis-ow-dashboard',
+			'origen-web-analytics-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' )
 		);
 
 		add_submenu_page(
-			'metricas-analisis-ow-dashboard',
-			__( 'Configuración', 'metricas-analisis-ow' ),
-			__( 'Configuración', 'metricas-analisis-ow' ),
+			'origen-web-analytics-dashboard',
+			__( 'Configuración', 'origen-web-analytics' ),
+			__( 'Configuración', 'origen-web-analytics' ),
 			'manage_options',
-			'metricas-analisis-ow-settings',
+			'origen-web-analytics-settings',
 			array( $this, 'render_settings_page' )
 		);
 	}
@@ -65,7 +65,7 @@ class WP_Metricas_Admin {
 	 * @param string $hook Página actual.
 	 */
 	public function enqueue_admin_assets( string $hook ): void {
-		if ( strpos( $hook, 'metricas-analisis-ow' ) === false ) {
+		if ( strpos( $hook, 'origen-web-analytics' ) === false ) {
 			return;
 		}
 
@@ -76,17 +76,17 @@ class WP_Metricas_Admin {
 			WP_METRICAS_VERSION
 		);
 
-		if ( 'toplevel_page_metricas-analisis-ow-dashboard' === $hook || strpos( $hook, 'metricas-analisis-ow-dashboard' ) !== false ) {
+		if ( 'toplevel_page_origen-web-analytics-dashboard' === $hook || strpos( $hook, 'origen-web-analytics-dashboard' ) !== false ) {
 			wp_enqueue_script(
 				'wp-metricas-chartjs',
 				WP_METRICAS_PLUGIN_URL . 'assets/js/chart.umd.min.js',
 				array(),
-				'4.4.1',
+				'4.5.1',
 				true
 			);
 
 			wp_enqueue_script(
-				'metricas-analisis-ow-dashboard',
+				'origen-web-analytics-dashboard',
 				WP_METRICAS_PLUGIN_URL . 'assets/js/dashboard.js',
 				array( 'wp-metricas-chartjs' ),
 				WP_METRICAS_VERSION,
@@ -94,22 +94,22 @@ class WP_Metricas_Admin {
 			);
 
 			wp_localize_script(
-				'metricas-analisis-ow-dashboard',
+				'origen-web-analytics-dashboard',
 				'wpMetricasDashboard',
 				array(
-					'restUrl'          => esc_url_raw( rest_url( 'metricas-analisis-ow/v1/stats' ) ),
-					'realtimeUrl'      => esc_url_raw( rest_url( 'metricas-analisis-ow/v1/realtime' ) ),
+					'restUrl'          => esc_url_raw( rest_url( 'origen-web-analytics/v1/stats' ) ),
+					'realtimeUrl'      => esc_url_raw( rest_url( 'origen-web-analytics/v1/realtime' ) ),
 					'realtimeInterval' => 15000,
 					'defaultDateFrom'  => gmdate( 'Y-m-d', strtotime( '-30 days' ) ),
 					'defaultDateTo'    => gmdate( 'Y-m-d' ),
 					'nonce'            => wp_create_nonce( 'wp_rest' ),
 					'i18n'             => array(
-						'visits'   => __( 'Visitas', 'metricas-analisis-ow' ),
-						'clicks'   => __( 'Clics', 'metricas-analisis-ow' ),
-						'loading'  => __( 'Cargando...', 'metricas-analisis-ow' ),
-						'noData'   => __( 'Sin datos para el período seleccionado', 'metricas-analisis-ow' ),
-						'seconds'  => __( 'segundos', 'metricas-analisis-ow' ),
-						'minutes'  => __( 'minutos', 'metricas-analisis-ow' ),
+						'visits'   => __( 'Visitas', 'origen-web-analytics' ),
+						'clicks'   => __( 'Clics', 'origen-web-analytics' ),
+						'loading'  => __( 'Cargando...', 'origen-web-analytics' ),
+						'noData'   => __( 'Sin datos para el período seleccionado', 'origen-web-analytics' ),
+						'seconds'  => __( 'segundos', 'origen-web-analytics' ),
+						'minutes'  => __( 'minutos', 'origen-web-analytics' ),
 					),
 				)
 			);

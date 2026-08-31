@@ -1,18 +1,18 @@
-=== Métricas y Análisis OW ===
+=== Origen Web Analytics ===
 Contributors: origenweb
 Tags: analytics, metrics, statistics, elementor, tracking
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.4
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Lightweight analytics for WordPress: page visits, button clicks, and time on page. Compatible with Elementor and ACF.
+Lightweight self-hosted analytics for WordPress: page visits, button clicks, and time on page. Compatible with Elementor and ACF.
 
 == Description ==
 
-**Métricas y Análisis OW** is a lightweight analytics plugin that runs inside your WordPress site without relying on external services.
+**Origen Web Analytics** is a lightweight analytics plugin by [Origen Web](https://origenweb.co) that runs inside your WordPress site without relying on external services.
 
 = Features =
 
@@ -40,10 +40,10 @@ Lightweight analytics for WordPress: page visits, button clicks, and time on pag
 
 == Installation ==
 
-1. Upload the `metricas-analisis-ow` folder to `/wp-content/plugins/`
+1. Upload the `origen-web-analytics` folder to `/wp-content/plugins/`
 2. Activate the plugin through the **Plugins** menu in WordPress
-3. Go to **Métricas y Análisis OW → Settings** to configure tracking
-4. Go to **Métricas y Análisis OW → Dashboard** to view statistics
+3. Go to **Origen Web Analytics → Settings** to configure tracking
+4. Go to **Origen Web Analytics → Dashboard** to view statistics
 5. (Recommended) Review **Settings → Privacy** and add the suggested policy content
 
 == Frequently Asked Questions ==
@@ -58,7 +58,7 @@ Yes. It identifies content with ACF fields and lets you filter it in the dashboa
 
 = Does it track administrators? =
 
-Not by default. You can change this in **Métricas y Análisis OW → Settings**.
+Not by default. You can change this in **Origen Web Analytics → Settings**.
 
 = Is data sent to external servers? =
 
@@ -66,7 +66,7 @@ No. All metrics are stored in your own database.
 
 = How are old records deleted? =
 
-Set the retention days in **Métricas y Análisis OW → Settings**. The plugin runs a daily cleanup task.
+Set the retention days in **Origen Web Analytics → Settings**. The plugin runs a daily cleanup task.
 
 == Screenshots ==
 
@@ -76,40 +76,25 @@ Set the retention days in **Métricas y Análisis OW → Settings**. The plugin 
 
 == Changelog ==
 
+= 2.0.0 =
+* Renamed plugin to Origen Web Analytics (distinctive brand name for WordPress.org)
+* Updated Chart.js to v4.5.1
+
 = 1.1.4 =
 * Requires WordPress 6.2+ (needed for safe %i SQL placeholders)
 * Fixed Plugin Check variable prefix warnings in templates
 
-= 1.1.3 =
-* Additional Plugin Check suppressions for safe %i table queries
-
-= 1.1.2 =
-* Plugin Check fixes: English readme, safe database queries, slug rename
-* Plugin slug changed to metricas-analisis-ow (WordPress.org requirement)
-
-= 1.1.1 =
-* Plugin display name updated to Métricas y Análisis OW
-
 = 1.1.0 =
 * WordPress.org preparation release
 * Local Chart.js bundle, data retention, privacy tools, uninstall cleanup
-
-= 1.0.3 =
-* Page time tracking, filter subtitle, clear filters button
 
 = 1.0.0 =
 * Initial release
 
 == Upgrade Notice ==
 
-= 1.1.4 =
-Requires WordPress 6.2 or higher.
-
-= 1.1.3 =
-Plugin Check compatibility improvements for database helpers.
-
-= 1.1.2 =
-WordPress.org compliance update. New plugin folder slug: metricas-analisis-ow.
+= 2.0.0 =
+Plugin renamed to Origen Web Analytics. New folder slug: origen-web-analytics.
 
 == Privacy Policy ==
 
@@ -127,4 +112,4 @@ Site administrators can configure retention, exclude users, and delete all data 
 
 == Third-party libraries ==
 
-* [Chart.js](https://www.chartjs.org/) v4.4.1 — MIT License (bundled in `assets/js/chart.umd.min.js`)
+* [Chart.js](https://www.chartjs.org/) v4.5.1 — MIT License (bundled in `assets/js/chart.umd.min.js`)

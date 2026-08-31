@@ -30,7 +30,7 @@ class WP_Metricas_REST_API {
 	 */
 	public function register_routes(): void {
 		register_rest_route(
-			'metricas-analisis-ow/v1',
+			'origen-web-analytics/v1',
 			'/visit',
 			array(
 				'methods'             => 'POST',
@@ -40,7 +40,7 @@ class WP_Metricas_REST_API {
 		);
 
 		register_rest_route(
-			'metricas-analisis-ow/v1',
+			'origen-web-analytics/v1',
 			'/click',
 			array(
 				'methods'             => 'POST',
@@ -50,7 +50,7 @@ class WP_Metricas_REST_API {
 		);
 
 		register_rest_route(
-			'metricas-analisis-ow/v1',
+			'origen-web-analytics/v1',
 			'/section',
 			array(
 				'methods'             => 'POST',
@@ -60,7 +60,7 @@ class WP_Metricas_REST_API {
 		);
 
 		register_rest_route(
-			'metricas-analisis-ow/v1',
+			'origen-web-analytics/v1',
 			'/stats',
 			array(
 				'methods'             => 'GET',
@@ -70,7 +70,7 @@ class WP_Metricas_REST_API {
 		);
 
 		register_rest_route(
-			'metricas-analisis-ow/v1',
+			'origen-web-analytics/v1',
 			'/heartbeat',
 			array(
 				'methods'             => 'POST',
@@ -80,7 +80,7 @@ class WP_Metricas_REST_API {
 		);
 
 		register_rest_route(
-			'metricas-analisis-ow/v1',
+			'origen-web-analytics/v1',
 			'/realtime',
 			array(
 				'methods'             => 'GET',

@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name:       Métricas y Análisis OW
+ * Plugin Name:       Origen Web Analytics
  * Plugin URI:        https://origenweb.co/plugins
- * Description:       Métricas de visitas, clics en botones y tiempo por página. Compatible con Elementor y ACF.
- * Version:           1.1.4
+ * Description:       Lightweight self-hosted analytics: page visits, button clicks, and time on page. Compatible with Elementor and ACF.
+ * Version:           2.0.0
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            Origen Web
  * Author URI:        https://origenweb.co
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       metricas-analisis-ow
+ * Text Domain:       origen-web-analytics
  * Domain Path:       /languages
  */
 
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WP_METRICAS_VERSION', '1.1.4' );
+define( 'WP_METRICAS_VERSION', '2.0.0' );
 define( 'WP_METRICAS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

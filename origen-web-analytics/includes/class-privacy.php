@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WP_Metricas_Privacy {
 
-	const EXPORTER_KEY = 'metricas-analisis-ow';
-	const ERASER_KEY   = 'metricas-analisis-ow';
+	const EXPORTER_KEY = 'origen-web-analytics';
+	const ERASER_KEY   = 'origen-web-analytics';
 
 	/**
 	 * @var WP_Metricas_Privacy|null
@@ -40,27 +40,27 @@ class WP_Metricas_Privacy {
 
 		$content = sprintf(
 			/* translators: %s: plugin name */
-			__( 'Este sitio utiliza el plugin %s para medir visitas, clics en botones y tiempo de permanencia en páginas con fines estadísticos.', 'metricas-analisis-ow' ),
-			'<strong>Métricas y Análisis OW</strong>'
+			__( 'Este sitio utiliza el plugin %s para medir visitas, clics en botones y tiempo de permanencia en páginas con fines estadísticos.', 'origen-web-analytics' ),
+			'<strong>Origen Web Analytics</strong>'
 		);
 
-		$content .= '<h2>' . esc_html__( 'Qué datos se recopilan', 'metricas-analisis-ow' ) . '</h2>';
+		$content .= '<h2>' . esc_html__( 'Qué datos se recopilan', 'origen-web-analytics' ) . '</h2>';
 		$content .= '<ul>';
-		$content .= '<li>' . esc_html__( 'Identificador de sesión anónimo (cookie).', 'metricas-analisis-ow' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'Páginas visitadas, URL de referencia y tipo de dispositivo.', 'metricas-analisis-ow' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'Clics en botones (texto y URL del botón).', 'metricas-analisis-ow' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'Tiempo de permanencia en cada página.', 'metricas-analisis-ow' ) . '</li>';
-		$content .= '<li>' . esc_html__( 'ID de usuario de WordPress si la persona está registrada.', 'metricas-analisis-ow' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Identificador de sesión anónimo (cookie).', 'origen-web-analytics' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Páginas visitadas, URL de referencia y tipo de dispositivo.', 'origen-web-analytics' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Clics en botones (texto y URL del botón).', 'origen-web-analytics' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'Tiempo de permanencia en cada página.', 'origen-web-analytics' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'ID de usuario de WordPress si la persona está registrada.', 'origen-web-analytics' ) . '</li>';
 		$content .= '</ul>';
 
-		$content .= '<h2>' . esc_html__( 'Dónde se almacenan', 'metricas-analisis-ow' ) . '</h2>';
-		$content .= '<p>' . esc_html__( 'Los datos se guardan en la base de datos de este sitio web. No se envían a servidores externos.', 'metricas-analisis-ow' ) . '</p>';
+		$content .= '<h2>' . esc_html__( 'Dónde se almacenan', 'origen-web-analytics' ) . '</h2>';
+		$content .= '<p>' . esc_html__( 'Los datos se guardan en la base de datos de este sitio web. No se envían a servidores externos.', 'origen-web-analytics' ) . '</p>';
 
-		$content .= '<h2>' . esc_html__( 'Retención', 'metricas-analisis-ow' ) . '</h2>';
-		$content .= '<p>' . esc_html__( 'Los registros se eliminan automáticamente después del período configurado en Métricas y Análisis OW → Configuración.', 'metricas-analisis-ow' ) . '</p>';
+		$content .= '<h2>' . esc_html__( 'Retención', 'origen-web-analytics' ) . '</h2>';
+		$content .= '<p>' . esc_html__( 'Los registros se eliminan automáticamente después del período configurado en Origen Web Analytics → Configuración.', 'origen-web-analytics' ) . '</p>';
 
 		wp_add_privacy_policy_content(
-			'Métricas y Análisis OW',
+			'Origen Web Analytics',
 			wp_kses_post( $content )
 		);
 	}
@@ -72,7 +72,7 @@ class WP_Metricas_Privacy {
 	 */
 	public function register_exporter( array $exporters ): array {
 		$exporters[ self::EXPORTER_KEY ] = array(
-			'exporter_friendly_name' => __( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
+			'exporter_friendly_name' => __( 'Origen Web Analytics', 'origen-web-analytics' ),
 			'callback'               => array( $this, 'export_personal_data' ),
 		);
 		return $exporters;
@@ -85,7 +85,7 @@ class WP_Metricas_Privacy {
 	 */
 	public function register_eraser( array $erasers ): array {
 		$erasers[ self::ERASER_KEY ] = array(
-			'eraser_friendly_name' => __( 'Métricas y Análisis OW', 'metricas-analisis-ow' ),
+			'eraser_friendly_name' => __( 'Origen Web Analytics', 'origen-web-analytics' ),
 			'callback'             => array( $this, 'erase_personal_data' ),
 		);
 		return $erasers;
@@ -123,15 +123,15 @@ class WP_Metricas_Privacy {
 
 		foreach ( $visits as $row ) {
 			$export_data[] = array(
-				'group_id'          => 'metricas-analisis-ow-visits',
-				'group_label'       => __( 'Visitas (Métricas y Análisis OW)', 'metricas-analisis-ow' ),
+				'group_id'          => 'origen-web-analytics-visits',
+				'group_label'       => __( 'Visitas (Origen Web Analytics)', 'origen-web-analytics' ),
 				'item_id'           => 'visit-' . md5( wp_json_encode( $row ) ),
 				'data'              => array(
-					array( 'name' => __( 'Página', 'metricas-analisis-ow' ), 'value' => $row['post_title'] ),
-					array( 'name' => __( 'URL', 'metricas-analisis-ow' ), 'value' => $row['url'] ),
-					array( 'name' => __( 'Referencia', 'metricas-analisis-ow' ), 'value' => $row['referrer'] ),
-					array( 'name' => __( 'Dispositivo', 'metricas-analisis-ow' ), 'value' => $row['device_type'] ),
-					array( 'name' => __( 'Fecha', 'metricas-analisis-ow' ), 'value' => $row['visited_at'] ),
+					array( 'name' => __( 'Página', 'origen-web-analytics' ), 'value' => $row['post_title'] ),
+					array( 'name' => __( 'URL', 'origen-web-analytics' ), 'value' => $row['url'] ),
+					array( 'name' => __( 'Referencia', 'origen-web-analytics' ), 'value' => $row['referrer'] ),
+					array( 'name' => __( 'Dispositivo', 'origen-web-analytics' ), 'value' => $row['device_type'] ),
+					array( 'name' => __( 'Fecha', 'origen-web-analytics' ), 'value' => $row['visited_at'] ),
 				),
 			);
 		}
@@ -147,13 +147,13 @@ class WP_Metricas_Privacy {
 
 		foreach ( $clicks as $row ) {
 			$export_data[] = array(
-				'group_id'    => 'metricas-analisis-ow-clicks',
-				'group_label' => __( 'Clics (Métricas y Análisis OW)', 'metricas-analisis-ow' ),
+				'group_id'    => 'origen-web-analytics-clicks',
+				'group_label' => __( 'Clics (Origen Web Analytics)', 'origen-web-analytics' ),
 				'item_id'     => 'click-' . md5( wp_json_encode( $row ) ),
 				'data'        => array(
-					array( 'name' => __( 'Botón', 'metricas-analisis-ow' ), 'value' => $row['button_text'] ),
-					array( 'name' => __( 'URL', 'metricas-analisis-ow' ), 'value' => $row['button_url'] ),
-					array( 'name' => __( 'Fecha', 'metricas-analisis-ow' ), 'value' => $row['clicked_at'] ),
+					array( 'name' => __( 'Botón', 'origen-web-analytics' ), 'value' => $row['button_text'] ),
+					array( 'name' => __( 'URL', 'origen-web-analytics' ), 'value' => $row['button_url'] ),
+					array( 'name' => __( 'Fecha', 'origen-web-analytics' ), 'value' => $row['clicked_at'] ),
 				),
 			);
 		}
@@ -169,13 +169,13 @@ class WP_Metricas_Privacy {
 
 		foreach ( $times as $row ) {
 			$export_data[] = array(
-				'group_id'    => 'metricas-analisis-ow-time',
-				'group_label' => __( 'Tiempo en página (Métricas y Análisis OW)', 'metricas-analisis-ow' ),
+				'group_id'    => 'origen-web-analytics-time',
+				'group_label' => __( 'Tiempo en página (Origen Web Analytics)', 'origen-web-analytics' ),
 				'item_id'     => 'time-' . md5( wp_json_encode( $row ) ),
 				'data'        => array(
-					array( 'name' => __( 'Página', 'metricas-analisis-ow' ), 'value' => $row['section_name'] ),
-					array( 'name' => __( 'Segundos', 'metricas-analisis-ow' ), 'value' => $row['duration_seconds'] ),
-					array( 'name' => __( 'Fecha', 'metricas-analisis-ow' ), 'value' => $row['recorded_at'] ),
+					array( 'name' => __( 'Página', 'origen-web-analytics' ), 'value' => $row['section_name'] ),
+					array( 'name' => __( 'Segundos', 'origen-web-analytics' ), 'value' => $row['duration_seconds'] ),
+					array( 'name' => __( 'Fecha', 'origen-web-analytics' ), 'value' => $row['recorded_at'] ),
 				),
 			);
 		}
@@ -220,7 +220,7 @@ class WP_Metricas_Privacy {
 		return array(
 			'items_removed'  => true,
 			'items_retained' => false,
-			'messages'       => array( __( 'Datos de Métricas y Análisis OW eliminados.', 'metricas-analisis-ow' ) ),
+			'messages'       => array( __( 'Datos de Origen Web Analytics eliminados.', 'origen-web-analytics' ) ),
 			'done'           => true,
 		);
 	}
