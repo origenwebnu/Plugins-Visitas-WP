@@ -32,7 +32,7 @@ class WP_Metricas_Admin {
 	public function register_menus(): void {
 		add_menu_page(
 			__( 'Origen Web Analytics', 'origen-web-analytics' ),
-			__( 'Origen Web Analytics', 'origen-web-analytics' ),
+			__( 'Analytics', 'origen-web-analytics' ),
 			'manage_options',
 			'origen-web-analytics-dashboard',
 			array( WP_Metricas_Dashboard::instance(), 'render_page' ),
