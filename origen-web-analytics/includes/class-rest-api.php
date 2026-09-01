@@ -117,6 +117,8 @@ class WP_Metricas_REST_API {
 			return new WP_REST_Response( array( 'success' => false ), 400 );
 		}
 
+		$location = WP_Metricas_Geolocation::resolve();
+
 		$id = WP_Metricas_Database::insert_visit(
 			array(
 				'post_id'      => $post_id,
@@ -127,6 +129,9 @@ class WP_Metricas_REST_API {
 				'session_id'   => sanitize_text_field( $request->get_param( 'session_id' ) ?: '' ),
 				'user_id'      => get_current_user_id(),
 				'device_type'  => $this->detect_device( $request->get_param( 'device_type' ) ),
+				'country_code' => $location['country_code'],
+				'country_name' => $location['country_name'],
+				'city'         => $location['city'],
 				'is_elementor' => (bool) $request->get_param( 'is_elementor' ),
 				'has_acf'      => (bool) $request->get_param( 'has_acf' ),
 			)
@@ -296,6 +301,8 @@ class WP_Metricas_REST_API {
 			ORDER BY date_label ASC",
 			array( $clicks_table, $date_from_sql, $date_to_sql )
 		);
+		$visits_by_country = $this->get_visits_by_country( $visits_table, $date_from_sql, $date_to_sql, $type );
+		$visits_by_city    = $this->get_visits_by_city( $visits_table, $date_from_sql, $date_to_sql, $type );
 
 		return new WP_REST_Response(
 			array(
@@ -310,6 +317,8 @@ class WP_Metricas_REST_API {
 				'top_buttons'    => $top_buttons,
 				'page_times'     => $page_times,
 				'visits_by_type' => $visits_by_type,
+				'visits_by_country' => $visits_by_country,
+				'visits_by_city'    => $visits_by_city,
 				'filters'        => array(
 					'date_from' => $date_from,
 					'date_to'   => $date_to,
@@ -397,6 +406,40 @@ class WP_Metricas_REST_API {
 			'pages' => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector = 'page' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
 			'posts' => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector = 'post' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
 			'cpt'   => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector NOT IN ('page', 'post') GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
+		);
+
+		$sql = $sql_map[ $type ] ?? $sql_map['all'];
+		return WP_Metricas_DB_Helper::get_results( $sql, array( $table, $from, $to ) );
+	}
+
+	/**
+	 * Visitas por país según el filtro de tipo.
+	 */
+	private function get_visits_by_country( string $table, string $from, string $to, string $type ): array {
+		$sql_map = array(
+			'all'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+			'pages'     => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+			'posts'     => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+			'acf'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+			'elementor' => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+			'cpt'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+		);
+
+		$sql = $sql_map[ $type ] ?? $sql_map['all'];
+		return WP_Metricas_DB_Helper::get_results( $sql, array( $table, $from, $to ) );
+	}
+
+	/**
+	 * Visitas por ciudad según el filtro de tipo.
+	 */
+	private function get_visits_by_city( string $table, string $from, string $to, string $type ): array {
+		$sql_map = array(
+			'all'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
+			'pages'     => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
+			'posts'     => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
+			'acf'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
+			'elementor' => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
+			'cpt'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
 		);
 
 		$sql = $sql_map[ $type ] ?? $sql_map['all'];

@@ -3,7 +3,7 @@
  * Plugin Name:       Origen Web Analytics
  * Plugin URI:        https://origenweb.co/plugins
  * Description:       Lightweight self-hosted analytics: page visits, button clicks, and time on page. Compatible with Elementor and ACF.
- * Version:           2.0.1
+ * Version:           2.1.0
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Author:            Origen Web
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WP_METRICAS_VERSION', '2.0.0' );
+define( 'WP_METRICAS_VERSION', '2.1.0' );
 define( 'WP_METRICAS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_METRICAS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -28,6 +28,7 @@ require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-db-helper.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-cron.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-realtime.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-settings.php';
+require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-geolocation.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-privacy.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-tracker.php';
 require_once WP_METRICAS_PLUGIN_DIR . 'includes/class-rest-api.php';

@@ -4,7 +4,7 @@ Tags: analytics, metrics, statistics, elementor, tracking
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,13 @@ Set the retention days in **Origen Web Analytics → Settings**. The plugin runs
 
 == Changelog ==
 
+= 2.1.0 =
+* Geographic analytics: visits by country (chart) and city (table)
+* Country and city detected server-side from CDN/hosting headers (no external APIs)
+
+= 2.0.1 =
+* Admin menu label shortened to "Analytics"
+
 = 2.0.0 =
 * Renamed plugin to Origen Web Analytics (distinctive brand name for WordPress.org)
 * Updated Chart.js to v4.5.1
@@ -104,6 +111,7 @@ This plugin collects browsing data for statistical purposes:
 * Visited pages, referrer URL, and device type
 * Button clicks (text and URL)
 * Time spent on each page
+* Approximate country and city (from server or CDN headers)
 * WordPress user ID when the visitor is logged in
 
 Data is stored in the site database and is not transmitted to third parties.

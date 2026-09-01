@@ -50,6 +50,7 @@ class WP_Metricas_Privacy {
 		$content .= '<li>' . esc_html__( 'Páginas visitadas, URL de referencia y tipo de dispositivo.', 'origen-web-analytics' ) . '</li>';
 		$content .= '<li>' . esc_html__( 'Clics en botones (texto y URL del botón).', 'origen-web-analytics' ) . '</li>';
 		$content .= '<li>' . esc_html__( 'Tiempo de permanencia en cada página.', 'origen-web-analytics' ) . '</li>';
+		$content .= '<li>' . esc_html__( 'País y ciudad aproximados (según cabeceras del servidor o CDN).', 'origen-web-analytics' ) . '</li>';
 		$content .= '<li>' . esc_html__( 'ID de usuario de WordPress si la persona está registrada.', 'origen-web-analytics' ) . '</li>';
 		$content .= '</ul>';
 

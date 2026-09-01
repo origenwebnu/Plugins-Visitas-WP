@@ -90,6 +90,12 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 				<canvas id="metricas-types-chart"></canvas>
 			</div>
 		</div>
+		<div class="wp-metricas-chart-box">
+			<h3><?php esc_html_e( 'Visitas por país', 'origen-web-analytics' ); ?></h3>
+			<div class="chart-container">
+				<canvas id="metricas-countries-chart"></canvas>
+			</div>
+		</div>
 	</div>
 
 	<div class="wp-metricas-tables">
@@ -122,6 +128,23 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 					</tr>
 				</thead>
 				<tbody id="metricas-top-buttons">
+					<tr><td colspan="4"><?php esc_html_e( 'Cargando...', 'origen-web-analytics' ); ?></td></tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="wp-metricas-table-box">
+			<h3><?php esc_html_e( 'Visitas por ciudad', 'origen-web-analytics' ); ?></h3>
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th><?php esc_html_e( 'Ciudad', 'origen-web-analytics' ); ?></th>
+						<th><?php esc_html_e( 'País', 'origen-web-analytics' ); ?></th>
+						<th><?php esc_html_e( 'Visitas', 'origen-web-analytics' ); ?></th>
+					</tr>
+				</thead>
+				<tbody id="metricas-top-cities">
 					<tr><td colspan="4"><?php esc_html_e( 'Cargando...', 'origen-web-analytics' ); ?></td></tr>
 				</tbody>
 			</table>

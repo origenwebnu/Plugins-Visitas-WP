@@ -9,6 +9,7 @@
 	var visitsChart = null;
 	var clicksChart = null;
 	var typesChart = null;
+	var countriesChart = null;
 	var realtimeInterval = null;
 
 	var els = {
@@ -24,7 +25,8 @@
 		uniqueSessions: document.getElementById('metricas-unique-sessions'),
 		topContent: document.getElementById('metricas-top-content'),
 		topButtons: document.getElementById('metricas-top-buttons'),
-		pageTimes: document.getElementById('metricas-page-times')
+		pageTimes: document.getElementById('metricas-page-times'),
+		topCities: document.getElementById('metricas-top-cities')
 	};
 
 	function formatDuration(seconds) {
@@ -98,8 +100,10 @@
 		renderVisitsChart(data.visits_by_day || []);
 		renderClicksChart(data.clicks_by_day || []);
 		renderTypesChart(data.visits_by_type || []);
+		renderCountriesChart(data.visits_by_country || []);
 		renderTopContent(data.top_content || []);
 		renderTopButtons(data.top_buttons || []);
+		renderTopCities(data.visits_by_city || []);
 		renderPageTimes(data.page_times || []);
 	}
 
@@ -197,6 +201,61 @@
 				maintainAspectRatio: false
 			}
 		});
+	}
+
+	function renderCountriesChart(rows) {
+		var canvas = document.getElementById('metricas-countries-chart');
+		if (!canvas) {
+			return;
+		}
+
+		var labels = rows.map(function (r) {
+			return r.country_name || r.country_code || '—';
+		});
+		var values = rows.map(function (r) { return parseInt(r.total, 10); });
+
+		if (countriesChart) {
+			countriesChart.destroy();
+		}
+
+		countriesChart = new Chart(canvas, {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: config.i18n.countries,
+					data: values,
+					backgroundColor: '#0ea5e9'
+				}]
+			},
+			options: {
+				indexAxis: 'y',
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: { legend: { display: false } },
+				scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+			}
+		});
+	}
+
+	function renderTopCities(rows) {
+		if (!els.topCities) {
+			return;
+		}
+
+		if (!rows.length) {
+			els.topCities.innerHTML = '<tr><td colspan="4">' + config.i18n.noData + '</td></tr>';
+			return;
+		}
+
+		els.topCities.innerHTML = rows.map(function (row, i) {
+			return '<tr>' +
+				'<td>' + (i + 1) + '</td>' +
+				'<td>' + escapeHtml(row.city || '—') + '</td>' +
+				'<td>' + escapeHtml(row.country_name || row.country_code || '—') + '</td>' +
+				'<td><strong>' + parseInt(row.total, 10) + '</strong></td>' +
+				'</tr>';
+		}).join('');
 	}
 
 	function renderTopContent(rows) {

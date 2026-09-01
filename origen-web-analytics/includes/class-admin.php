@@ -110,6 +110,7 @@ class WP_Metricas_Admin {
 						'noData'   => __( 'Sin datos para el período seleccionado', 'origen-web-analytics' ),
 						'seconds'  => __( 'segundos', 'origen-web-analytics' ),
 						'minutes'  => __( 'minutos', 'origen-web-analytics' ),
+						'countries' => __( 'Visitas', 'origen-web-analytics' ),
 					),
 				)
 			);

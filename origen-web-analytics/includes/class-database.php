@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WP_Metricas_Database {
 
-	const DB_VERSION = '1.0.0';
+	const DB_VERSION = '1.1.0';
 
 	/**
 	 * Nombre de tabla de visitas.
@@ -77,6 +77,9 @@ class WP_Metricas_Database {
 			session_id varchar(64) NOT NULL DEFAULT '',
 			user_id bigint(20) unsigned NOT NULL DEFAULT 0,
 			device_type varchar(20) NOT NULL DEFAULT '',
+			country_code char(2) NOT NULL DEFAULT '',
+			country_name varchar(100) NOT NULL DEFAULT '',
+			city varchar(100) NOT NULL DEFAULT '',
 			is_elementor tinyint(1) NOT NULL DEFAULT 0,
 			has_acf tinyint(1) NOT NULL DEFAULT 0,
 			visited_at datetime NOT NULL,
@@ -84,7 +87,9 @@ class WP_Metricas_Database {
 			KEY post_id (post_id),
 			KEY post_type (post_type),
 			KEY visited_at (visited_at),
-			KEY session_id (session_id)
+			KEY session_id (session_id),
+			KEY country_code (country_code),
+			KEY city (city)
 		) {$charset_collate};";
 
 		$sql_clicks = "CREATE TABLE {$clicks} (
@@ -148,11 +153,14 @@ class WP_Metricas_Database {
 				'session_id'   => sanitize_text_field( $data['session_id'] ?? '' ),
 				'user_id'      => absint( $data['user_id'] ?? 0 ),
 				'device_type'  => sanitize_text_field( $data['device_type'] ?? '' ),
+				'country_code' => sanitize_text_field( $data['country_code'] ?? '' ),
+				'country_name' => sanitize_text_field( $data['country_name'] ?? '' ),
+				'city'         => sanitize_text_field( $data['city'] ?? '' ),
 				'is_elementor' => ! empty( $data['is_elementor'] ) ? 1 : 0,
 				'has_acf'      => ! empty( $data['has_acf'] ) ? 1 : 0,
 				'visited_at'   => current_time( 'mysql' ),
 			),
-			array( '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%d', '%s' )
+			array( '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%s' )
 		);
 
 		return $result ? $wpdb->insert_id : false;
