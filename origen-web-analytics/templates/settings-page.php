@@ -153,6 +153,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 
 		<div class="settings-section">
+			<h2><?php esc_html_e( 'Ubicación geográfica', 'origen-web-analytics' ); ?></h2>
+			<p class="description">
+				<?php esc_html_e( 'El plugin registra país y ciudad desde cabeceras del servidor o CDN (Cloudflare, CloudFront, etc.). No usa APIs externas. Si usas Cloudflare, activa las cabeceras de geolocalización para mejores resultados.', 'origen-web-analytics' ); ?>
+			</p>
+
 			<h2><?php esc_html_e( 'Privacidad', 'origen-web-analytics' ); ?></h2>
 			<p class="description">
 				<?php
