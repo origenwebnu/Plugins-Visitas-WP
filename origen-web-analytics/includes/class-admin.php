@@ -111,6 +111,7 @@ class WP_Metricas_Admin {
 						'seconds'  => __( 'segundos', 'origen-web-analytics' ),
 						'minutes'  => __( 'minutos', 'origen-web-analytics' ),
 						'countries' => __( 'Visitas', 'origen-web-analytics' ),
+						'pageOf'    => __( 'Página %1$s de %2$s', 'origen-web-analytics' ),
 					),
 				)
 			);

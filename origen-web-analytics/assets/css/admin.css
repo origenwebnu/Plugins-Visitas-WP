@@ -249,7 +249,7 @@
 /* ── Tablas ── */
 .wp-metricas-tables {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+	grid-template-columns: 1fr;
 	gap: 20px;
 }
 
@@ -260,6 +260,7 @@
 	padding: 24px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	overflow-x: auto;
+	width: 100%;
 }
 
 .wp-metricas-table-box h3 {
@@ -297,6 +298,23 @@
 
 .wp-metricas-table-box tr:hover td {
 	background: #f9fafb;
+}
+
+.wp-metricas-pagination {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-top: 16px;
+	padding-top: 12px;
+	border-top: 1px solid #f0f0f1;
+}
+
+.wp-metricas-pagination .metricas-page-info {
+	font-size: 13px;
+	color: #646970;
+	min-width: 120px;
+	text-align: center;
 }
 
 /* ── Configuración ── */
@@ -370,8 +388,7 @@
 }
 
 @media (max-width: 782px) {
-	.wp-metricas-charts,
-	.wp-metricas-tables {
+	.wp-metricas-charts {
 		grid-template-columns: 1fr;
 	}
 

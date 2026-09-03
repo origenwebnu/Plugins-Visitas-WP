@@ -275,7 +275,7 @@ class WP_Metricas_REST_API {
 			WHERE clicked_at BETWEEN %s AND %s
 			GROUP BY button_text, button_url, elementor_widget_id
 			ORDER BY clicks DESC
-			LIMIT 10",
+			LIMIT 1000",
 			array( $clicks_table, $date_from_sql, $date_to_sql )
 		);
 		$page_times    = $this->get_page_times( $sections_table, $date_from_sql, $date_to_sql, $type );
@@ -351,12 +351,12 @@ class WP_Metricas_REST_API {
 	 */
 	private function get_top_content( string $table, string $from, string $to, string $type ): array {
 		$sql_map = array(
-			'all'       => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 10",
-			'pages'     => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 10",
-			'posts'     => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 10",
-			'acf'       => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 10",
-			'elementor' => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 10",
-			'cpt'       => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 10",
+			'all'       => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 100",
+			'pages'     => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 100",
+			'posts'     => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 100",
+			'acf'       => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 100",
+			'elementor' => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 100",
+			'cpt'       => "SELECT post_id, post_title, post_type, COUNT(*) as visits FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') GROUP BY post_id, post_title, post_type ORDER BY visits DESC LIMIT 100",
 		);
 
 		$sql = $sql_map[ $type ] ?? $sql_map['all'];
@@ -402,10 +402,10 @@ class WP_Metricas_REST_API {
 	 */
 	private function get_page_times( string $table, string $from, string $to, string $type ): array {
 		$sql_map = array(
-			'all'   => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
-			'pages' => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector = 'page' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
-			'posts' => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector = 'post' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
-			'cpt'   => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector NOT IN ('page', 'post') GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 15",
+			'all'   => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 100",
+			'pages' => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector = 'page' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 100",
+			'posts' => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector = 'post' GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 100",
+			'cpt'   => "SELECT s.post_id, MAX(s.section_name) as post_title, MAX(s.selector) as post_type, SUM(s.duration_seconds) as total_seconds, AVG(s.duration_seconds) as avg_seconds, COUNT(DISTINCT s.session_id) as sessions FROM %i s WHERE s.recorded_at BETWEEN %s AND %s AND s.section_id = 'page-time' AND s.selector NOT IN ('page', 'post') GROUP BY s.post_id ORDER BY total_seconds DESC LIMIT 100",
 		);
 
 		$sql = $sql_map[ $type ] ?? $sql_map['all'];
@@ -417,12 +417,12 @@ class WP_Metricas_REST_API {
 	 */
 	private function get_visits_by_country( string $table, string $from, string $to, string $type ): array {
 		$sql_map = array(
-			'all'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
-			'pages'     => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
-			'posts'     => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
-			'acf'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
-			'elementor' => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
-			'cpt'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 15",
+			'all'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 100",
+			'pages'     => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 100",
+			'posts'     => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 100",
+			'acf'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 100",
+			'elementor' => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 100",
+			'cpt'       => "SELECT country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') AND country_code != '' AND country_code != 'XX' GROUP BY country_code, country_name ORDER BY total DESC LIMIT 100",
 		);
 
 		$sql = $sql_map[ $type ] ?? $sql_map['all'];
@@ -434,12 +434,12 @@ class WP_Metricas_REST_API {
 	 */
 	private function get_visits_by_city( string $table, string $from, string $to, string $type ): array {
 		$sql_map = array(
-			'all'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
-			'pages'     => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
-			'posts'     => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
-			'acf'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
-			'elementor' => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
-			'cpt'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 15",
+			'all'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 100",
+			'pages'     => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'page' AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 100",
+			'posts'     => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type = 'post' AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 100",
+			'acf'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND has_acf = 1 AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 100",
+			'elementor' => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND is_elementor = 1 AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 100",
+			'cpt'       => "SELECT city, country_name, country_code, COUNT(*) as total FROM %i WHERE visited_at BETWEEN %s AND %s AND post_type NOT IN ('page', 'post') AND city != '' GROUP BY city, country_code, country_name ORDER BY total DESC LIMIT 100",
 		);
 
 		$sql = $sql_map[ $type ] ?? $sql_map['all'];

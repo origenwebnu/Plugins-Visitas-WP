@@ -11,6 +11,14 @@
 	var typesChart = null;
 	var countriesChart = null;
 	var realtimeInterval = null;
+	var PAGE_SIZE = 10;
+
+	var tableState = {
+		content: { rows: [], page: 1 },
+		buttons: { rows: [], page: 1 },
+		cities: { rows: [], page: 1 },
+		pageTimes: { rows: [], page: 1 }
+	};
 
 	var els = {
 		dateFrom: document.getElementById('metricas-date-from'),
@@ -86,6 +94,66 @@
 			});
 	}
 
+	function getTotalPages(rowCount) {
+		return Math.max(1, Math.ceil(rowCount / PAGE_SIZE));
+	}
+
+	function updatePagination(key) {
+		var state = tableState[key];
+		var totalPages = getTotalPages(state.rows.length);
+		var info = document.querySelector('.metricas-page-info[data-pagination="' + key + '"]');
+		var prevBtn = document.querySelector('.metricas-page-prev[data-pagination="' + key + '"]');
+		var nextBtn = document.querySelector('.metricas-page-next[data-pagination="' + key + '"]');
+
+		if (info) {
+			info.textContent = config.i18n.pageOf
+				.replace('%1$s', state.page)
+				.replace('%2$s', totalPages);
+		}
+		if (prevBtn) {
+			prevBtn.disabled = state.page <= 1;
+		}
+		if (nextBtn) {
+			nextBtn.disabled = state.page >= totalPages || state.rows.length === 0;
+		}
+	}
+
+	function changePage(key, delta) {
+		var state = tableState[key];
+		var totalPages = getTotalPages(state.rows.length);
+		var nextPage = state.page + delta;
+
+		if (nextPage < 1 || nextPage > totalPages) {
+			return;
+		}
+
+		state.page = nextPage;
+
+		if (key === 'content') {
+			renderTopContent();
+		} else if (key === 'buttons') {
+			renderTopButtons();
+		} else if (key === 'cities') {
+			renderTopCities();
+		} else if (key === 'pageTimes') {
+			renderPageTimes();
+		}
+	}
+
+	function bindPagination() {
+		document.querySelectorAll('.metricas-page-prev').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				changePage(btn.getAttribute('data-pagination'), -1);
+			});
+		});
+
+		document.querySelectorAll('.metricas-page-next').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				changePage(btn.getAttribute('data-pagination'), 1);
+			});
+		});
+	}
+
 	function renderStats(data) {
 		if (els.totalVisits) {
 			els.totalVisits.textContent = (data.summary && data.summary.total_visits) || 0;
@@ -101,10 +169,18 @@
 		renderClicksChart(data.clicks_by_day || []);
 		renderTypesChart(data.visits_by_type || []);
 		renderCountriesChart(data.visits_by_country || []);
-		renderTopContent(data.top_content || []);
-		renderTopButtons(data.top_buttons || []);
-		renderTopCities(data.visits_by_city || []);
-		renderPageTimes(data.page_times || []);
+		tableState.content.rows = data.top_content || [];
+		tableState.content.page = 1;
+		tableState.buttons.rows = data.top_buttons || [];
+		tableState.buttons.page = 1;
+		tableState.cities.rows = data.visits_by_city || [];
+		tableState.cities.page = 1;
+		tableState.pageTimes.rows = data.page_times || [];
+		tableState.pageTimes.page = 1;
+		renderTopContent();
+		renderTopButtons();
+		renderTopCities();
+		renderPageTimes();
 	}
 
 	function renderVisitsChart(rows) {
@@ -238,86 +314,122 @@
 		});
 	}
 
-	function renderTopCities(rows) {
+	function renderTopCities() {
 		if (!els.topCities) {
 			return;
 		}
 
+		var state = tableState.cities;
+		var rows = state.rows;
+
 		if (!rows.length) {
 			els.topCities.innerHTML = '<tr><td colspan="4">' + config.i18n.noData + '</td></tr>';
+			updatePagination('cities');
 			return;
 		}
 
-		els.topCities.innerHTML = rows.map(function (row, i) {
+		var start = (state.page - 1) * PAGE_SIZE;
+		var pageRows = rows.slice(start, start + PAGE_SIZE);
+
+		els.topCities.innerHTML = pageRows.map(function (row, i) {
 			return '<tr>' +
-				'<td>' + (i + 1) + '</td>' +
+				'<td>' + (start + i + 1) + '</td>' +
 				'<td>' + escapeHtml(row.city || '—') + '</td>' +
 				'<td>' + escapeHtml(row.country_name || row.country_code || '—') + '</td>' +
 				'<td><strong>' + parseInt(row.total, 10) + '</strong></td>' +
 				'</tr>';
 		}).join('');
+
+		updatePagination('cities');
 	}
 
-	function renderTopContent(rows) {
+	function renderTopContent() {
 		if (!els.topContent) {
 			return;
 		}
 
+		var state = tableState.content;
+		var rows = state.rows;
+
 		if (!rows.length) {
 			els.topContent.innerHTML = '<tr><td colspan="4">' + config.i18n.noData + '</td></tr>';
+			updatePagination('content');
 			return;
 		}
 
-		els.topContent.innerHTML = rows.map(function (row, i) {
+		var start = (state.page - 1) * PAGE_SIZE;
+		var pageRows = rows.slice(start, start + PAGE_SIZE);
+
+		els.topContent.innerHTML = pageRows.map(function (row, i) {
 			return '<tr>' +
-				'<td>' + (i + 1) + '</td>' +
+				'<td>' + (start + i + 1) + '</td>' +
 				'<td>' + escapeHtml(row.post_title || '—') + '</td>' +
 				'<td>' + escapeHtml(row.post_type || '') + '</td>' +
 				'<td><strong>' + parseInt(row.visits, 10) + '</strong></td>' +
 				'</tr>';
 		}).join('');
+
+		updatePagination('content');
 	}
 
-	function renderTopButtons(rows) {
+	function renderTopButtons() {
 		if (!els.topButtons) {
 			return;
 		}
 
+		var state = tableState.buttons;
+		var rows = state.rows;
+
 		if (!rows.length) {
 			els.topButtons.innerHTML = '<tr><td colspan="4">' + config.i18n.noData + '</td></tr>';
+			updatePagination('buttons');
 			return;
 		}
 
-		els.topButtons.innerHTML = rows.map(function (row, i) {
+		var start = (state.page - 1) * PAGE_SIZE;
+		var pageRows = rows.slice(start, start + PAGE_SIZE);
+
+		els.topButtons.innerHTML = pageRows.map(function (row, i) {
 			var text = row.button_text || row.button_url || row.elementor_widget_id || '—';
 			return '<tr>' +
-				'<td>' + (i + 1) + '</td>' +
+				'<td>' + (start + i + 1) + '</td>' +
 				'<td>' + escapeHtml(text) + '</td>' +
 				'<td>' + escapeHtml(row.button_url || '—') + '</td>' +
 				'<td><strong>' + parseInt(row.clicks, 10) + '</strong></td>' +
 				'</tr>';
 		}).join('');
+
+		updatePagination('buttons');
 	}
 
-	function renderPageTimes(rows) {
+	function renderPageTimes() {
 		if (!els.pageTimes) {
 			return;
 		}
 
+		var state = tableState.pageTimes;
+		var rows = state.rows;
+
 		if (!rows.length) {
 			els.pageTimes.innerHTML = '<tr><td colspan="5">' + config.i18n.noData + '</td></tr>';
+			updatePagination('pageTimes');
 			return;
 		}
 
-		els.pageTimes.innerHTML = rows.map(function (row, i) {
+		var start = (state.page - 1) * PAGE_SIZE;
+		var pageRows = rows.slice(start, start + PAGE_SIZE);
+
+		els.pageTimes.innerHTML = pageRows.map(function (row, i) {
 			return '<tr>' +
-				'<td>' + (i + 1) + '</td>' +
+				'<td>' + (start + i + 1) + '</td>' +
 				'<td>' + escapeHtml(row.post_title || '—') + '</td>' +
 				'<td>' + escapeHtml(row.post_type || '—') + '</td>' +
 				'<td>' + formatDuration(row.avg_seconds) + '</td>' +
 				'<td>' + formatDuration(row.total_seconds) + '</td>' +
 				'</tr>';
 		}).join('');
+
+		updatePagination('pageTimes');
 	}
 
 	function escapeHtml(str) {
@@ -385,4 +497,5 @@
 
 	fetchStats();
 	startRealtimePolling();
+	bindPagination();
 })();

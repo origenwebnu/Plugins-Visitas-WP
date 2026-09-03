@@ -99,7 +99,7 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 	</div>
 
 	<div class="wp-metricas-tables">
-		<div class="wp-metricas-table-box">
+		<div class="wp-metricas-table-box" data-metricas-table="content">
 			<h3><?php esc_html_e( 'Contenido más visitado', 'origen-web-analytics' ); ?></h3>
 			<table>
 				<thead>
@@ -114,9 +114,14 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 					<tr><td colspan="4"><?php esc_html_e( 'Cargando...', 'origen-web-analytics' ); ?></td></tr>
 				</tbody>
 			</table>
+			<div class="wp-metricas-pagination" data-pagination="content">
+				<button type="button" class="button metricas-page-prev" data-pagination="content" disabled><?php esc_html_e( 'Anterior', 'origen-web-analytics' ); ?></button>
+				<span class="metricas-page-info" data-pagination="content"></span>
+				<button type="button" class="button metricas-page-next" data-pagination="content" disabled><?php esc_html_e( 'Siguiente', 'origen-web-analytics' ); ?></button>
+			</div>
 		</div>
 
-		<div class="wp-metricas-table-box">
+		<div class="wp-metricas-table-box" data-metricas-table="buttons">
 			<h3><?php esc_html_e( 'Botones con más clics', 'origen-web-analytics' ); ?></h3>
 			<table>
 				<thead>
@@ -131,9 +136,14 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 					<tr><td colspan="4"><?php esc_html_e( 'Cargando...', 'origen-web-analytics' ); ?></td></tr>
 				</tbody>
 			</table>
+			<div class="wp-metricas-pagination" data-pagination="buttons">
+				<button type="button" class="button metricas-page-prev" data-pagination="buttons" disabled><?php esc_html_e( 'Anterior', 'origen-web-analytics' ); ?></button>
+				<span class="metricas-page-info" data-pagination="buttons"></span>
+				<button type="button" class="button metricas-page-next" data-pagination="buttons" disabled><?php esc_html_e( 'Siguiente', 'origen-web-analytics' ); ?></button>
+			</div>
 		</div>
 
-		<div class="wp-metricas-table-box">
+		<div class="wp-metricas-table-box" data-metricas-table="cities">
 			<h3><?php esc_html_e( 'Visitas por ciudad', 'origen-web-analytics' ); ?></h3>
 			<table>
 				<thead>
@@ -148,9 +158,14 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 					<tr><td colspan="4"><?php esc_html_e( 'Cargando...', 'origen-web-analytics' ); ?></td></tr>
 				</tbody>
 			</table>
+			<div class="wp-metricas-pagination" data-pagination="cities">
+				<button type="button" class="button metricas-page-prev" data-pagination="cities" disabled><?php esc_html_e( 'Anterior', 'origen-web-analytics' ); ?></button>
+				<span class="metricas-page-info" data-pagination="cities"></span>
+				<button type="button" class="button metricas-page-next" data-pagination="cities" disabled><?php esc_html_e( 'Siguiente', 'origen-web-analytics' ); ?></button>
+			</div>
 		</div>
 
-		<div class="wp-metricas-table-box">
+		<div class="wp-metricas-table-box" data-metricas-table="pageTimes">
 			<h3><?php esc_html_e( 'Tiempo por página', 'origen-web-analytics' ); ?></h3>
 			<table>
 				<thead>
@@ -166,6 +181,11 @@ $origen_web_analytics_default_to   = gmdate( 'Y-m-d' );
 					<tr><td colspan="5"><?php esc_html_e( 'Cargando...', 'origen-web-analytics' ); ?></td></tr>
 				</tbody>
 			</table>
+			<div class="wp-metricas-pagination" data-pagination="pageTimes">
+				<button type="button" class="button metricas-page-prev" data-pagination="pageTimes" disabled><?php esc_html_e( 'Anterior', 'origen-web-analytics' ); ?></button>
+				<span class="metricas-page-info" data-pagination="pageTimes"></span>
+				<button type="button" class="button metricas-page-next" data-pagination="pageTimes" disabled><?php esc_html_e( 'Siguiente', 'origen-web-analytics' ); ?></button>
+			</div>
 		</div>
 	</div>
 </div>

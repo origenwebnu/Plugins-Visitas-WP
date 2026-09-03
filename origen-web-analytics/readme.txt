@@ -4,7 +4,7 @@ Tags: analytics, metrics, statistics, elementor, tracking
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,9 +76,13 @@ Set the retention days in **Origen Web Analytics → Settings**. The plugin runs
 
 == Changelog ==
 
+= 2.1.1 =
+* Geographic analytics: visits by country chart and city table
+* Admin menu label: Analytics
+* Geo detection via server/CDN headers (no external APIs)
+
 = 2.1.0 =
-* Geographic analytics: visits by country (chart) and city (table)
-* Country and city detected server-side from CDN/hosting headers (no external APIs)
+* Initial geo analytics attempt (use 2.1.1 instead)
 
 = 2.0.1 =
 * Admin menu label shortened to "Analytics"
